@@ -11,7 +11,7 @@ const nav = [
 const current = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-ink/10">
+<header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-ink/10 mb-10">
   <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
     <nav
       class="grid grid-cols-[1fr_auto_1fr] items-center h-24"
@@ -25,8 +25,8 @@ const current = Astro.url.pathname;
             <li>
               <a
                 href={item.href}
-                class={`text-sm font-semibold tracking-wide uppercase transition-colors ${
-                  isActive ? 'text-bordo' : 'text-ink/70 hover:text-bordo'
+                class={`relative py-1 text-sm font-bold tracking-wide uppercase transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-bordo after:transition-opacity ${
+                  isActive ? 'text-bordo after:opacity-100' : 'text-ink hover:text-bordo after:opacity-0'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
               >
@@ -73,15 +73,18 @@ const current = Astro.url.pathname;
       </details>
 
       {/* Center: logo */}
-      <a href="/" class="flex items-center justify-center shrink-0 focus-visible:outline-offset-4">
+      <a
+        href="/"
+        class="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 translate-y-5 overflow-hidden rounded-full border-4 border-cream bg-cream shadow-xl focus-visible:outline-offset-4"
+        aria-label="Đorđe Cvarkov — zvanični sajt"
+      >
         <img
           src="/logo.png"
           alt="Đorđe Cvarkov"
-          class="h-16 w-auto"
-          width="112"
-          height="112"
+          class="h-full w-full object-cover"
+          width="128"
+          height="128"
         />
-        <span class="sr-only">Đorđe Cvarkov — zvanični sajt</span>
       </a>
 
       {/* Right: socials */}
