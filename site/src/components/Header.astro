@@ -11,14 +11,14 @@ const nav = [
 const current = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-ink/10 mb-10">
-  <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+<header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-ink/10 mb-8">
+  <div class="max-w-screen-2xl mx-auto">
     <nav
       class="grid grid-cols-[1fr_auto_1fr] items-center h-24"
       aria-label="Glavna navigacija"
     >
       {/* Left: desktop nav */}
-      <ul class="hidden md:flex items-center gap-6 justify-start">
+      <ul class="hidden md:flex items-center gap-6 justify-start pl-4 lg:pl-6">
         {nav.map((item) => {
           const isActive = current === item.href || current.startsWith(`${item.href}/`);
           return (
@@ -75,7 +75,7 @@ const current = Astro.url.pathname;
       {/* Center: logo */}
       <a
         href="/"
-        class="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 translate-y-5 overflow-hidden rounded-full border-4 border-cream bg-cream shadow-xl focus-visible:outline-offset-4"
+        class="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 translate-y-2.5 overflow-hidden rounded-full border-4 border-cream bg-cream shadow-xl focus-visible:outline-offset-4"
         aria-label="Đorđe Cvarkov — zvanični sajt"
       >
         <img
