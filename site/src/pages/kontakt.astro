@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+
+const [bioEntry] = await getCollection('bio');
+const bio = bioEntry?.data;
+---
+
+<Layout title="Kontakt" description="Kontakt i saradnja sa Đorđem Cvarkovom.">
+  <section class="bg-hay py-16 sm:py-24">
+    <div class="max-w-screen-2xl mx-auto px-4 lg:px-6 text-center">
+      <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo mb-2">Kontakt</p>
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mb-6">Kontakt i saradnja</h1>
+      <p class="text-lg sm:text-xl text-ink/80 max-w-2xl mx-auto">
+        Za predstave, saradnje i medijska pitanja pišite direktno. Odgovor stiže u najkraćem roku.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-24 bg-paper">
+    <div class="max-w-xl mx-auto px-4 lg:px-6 space-y-6">
+      <div class="space-y-4">
+        <a
+          href="tel:+38165123456789"
+          class="block w-full text-center px-6 py-4 bg-bordo text-cream text-lg font-bold uppercase tracking-wide rounded hover:bg-bordo-dark transition-colors"
+        >
+          +381 65 1234 56789
+        </a>
+        <p class="text-center text-xs text-stone uppercase tracking-wider font-bold">Cvarkov Tim</p>
+      </div>
+
+      <a
+        href="mailto:info@cvarkov.com"
+        class="block w-full text-center px-6 py-4 border-2 border-ink text-ink text-lg font-bold uppercase tracking-wide rounded hover:bg-ink hover:text-cream transition-colors"
+      >
+        info@cvarkov.com
+      </a>
+
+      <a
+        href="mailto:saradnja@cvarkov.com"
+        class="block w-full text-center px-6 py-4 border-2 border-ink text-ink text-lg font-bold uppercase tracking-wide rounded hover:bg-ink hover:text-cream transition-colors"
+      >
+        saradnja@cvarkov.com
+      </a>
+
+      <div class="text-center pt-6 border-t border-ink/10">
+        <p class="text-sm text-stone uppercase tracking-[0.2em] mb-4 font-bold">Društvene mreže</p>
+        <SocialLinks variant="dark" class="justify-center" exclude={['YouTube']} />
+      </div>
+    </div>
+  </section>
+</Layout>

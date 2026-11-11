@@ -1,0 +1,130 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import EpisodeCard from '../components/EpisodeCard.astro';
+import ShowList from '../components/ShowList.astro';
+
+const episodes = await getCollection('episodes');
+const videoEpisodes = episodes.filter((ep) => ep.data.type === 'episode');
+const sortedEpisodes = videoEpisodes.sort((a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime());
+
+const now = new Date();
+const released = sortedEpisodes.filter((ep) => ep.data.releaseDate.getTime() <= now.getTime());
+
+const latest = released[0];
+const nextTeaser = episodes
+  .filter((ep) => ep.data.type === 'teaser')
+  .sort((a, b) => a.data.releaseDate.getTime() - b.data.releaseDate.getTime())[0];
+
+const [bioEntry] = await getCollection('bio');
+const bio = bioEntry?.data;
+const { Content } = bioEntry ? await render(bioEntry) : { Content: null };
+
+const shows = await getCollection('shows');
+const upcomingShows = shows
+  .filter((s) => s.data.status === 'upcoming')
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
+  .slice(0, 5);
+---
+
+<Layout title="Početna">
+  {/* Hero */}
+  <section class="relative bg-cream overflow-hidden">
+    <div class="max-w-screen-2xl mx-auto px-4 lg:px-6 py-12 lg:py-20">
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center min-h-[70vh]">
+        <div class="order-2 lg:order-1 space-y-8">
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo">Zvanični sajt</p>
+
+          <h1 class="font-display text-6xl sm:text-7xl lg:text-8xl font-bold text-ink leading-[0.9]">
+            ĐORĐE<br />CVARKOV
+          </h1>
+
+          <p class="font-body text-xl sm:text-2xl text-ink/80 max-w-md leading-relaxed">
+            Objasniću ti kako stvari stoje — selo po selo, reč po reč.
+          </p>
+
+          <div class="flex flex-wrap gap-4">
+            <a
+              href="/video"
+              class="inline-flex items-center gap-2 px-7 py-3.5 bg-bordo text-cream text-sm font-bold uppercase tracking-wide rounded hover:bg-bordo-dark transition-colors"
+            >
+              Pogledaj video
+            </a>
+          </div>
+
+          <SocialLinks variant="dark" />
+        </div>
+
+        {bio?.photo && (
+          <div class="order-1 lg:order-2 relative">
+            <div class="absolute inset-0 bg-hay rounded-3xl rotate-2"></div>
+            <img
+              src={bio.photo}
+              alt="Đorđe Cvarkov"
+              class="relative rounded-3xl shadow-2xl object-cover w-full aspect-[4/3] lg:aspect-[3/4]"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {/* O Đorđu */}
+  {Content && (
+    <section class="py-16 sm:py-24 bg-paper">
+      <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+          <div class="space-y-4">
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo">Ko je Đorđe?</p>
+            <h2 class="font-display text-4xl sm:text-5xl text-ink">{bio?.name}</h2>
+            <p class="font-body text-xl sm:text-2xl text-ink/80 font-medium max-w-xl">{bio?.tagline}</p>
+          </div>
+          <div class="prose prose-lg prose-stone max-w-none text-ink/80">
+            <Content />
+          </div>
+        </div>
+        <div class="mt-10">
+          <SocialLinks variant="dark" />
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* Latest episodes */}
+  <section class="py-16 sm:py-24 bg-paper">
+    <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        <div>
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo mb-2">Najnovije</p>
+          <h2 class="font-display text-4xl text-ink">Najnoviji Video</h2>
+        </div>
+        <a href="/video" class="text-ink font-semibold hover:text-bordo transition-colors">Svi video zapisi →</a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {latest && <EpisodeCard episode={latest} />}
+        {nextTeaser && <EpisodeCard episode={nextTeaser} />}
+      </div>
+    </div>
+  </section>
+
+  {upcomingShows.length > 0 && (
+    <section class="py-16 sm:py-24 bg-hay">
+      <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+          <div>
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo mb-2">Uživo</p>
+            <h2 class="font-display text-4xl text-ink">Predstave</h2>
+          </div>
+          <a href="/predstave" class="text-ink font-semibold hover:text-bordo transition-colors">Svi termini →</a>
+        </div>
+
+        <ShowList shows={upcomingShows} title="" />
+      </div>
+    </section>
+  )}
+
+</Layout>

@@ -1,0 +1,52 @@
+---
+interface Props {
+  class?: string;
+  variant?: 'light' | 'dark' | 'header';
+  exclude?: string[];
+}
+
+const { class: className = '', variant = 'light', exclude = [] } = Astro.props;
+
+const links = [
+  {
+    name: 'Instagram',
+    href: 'https://instagram.com/cvarkov.official',
+    icon: '<rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>',
+  },
+  {
+    name: 'YouTube',
+    href: 'https://youtube.com/@cvarkov.official',
+    icon: '<path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17z"></path><path d="m10 15 5-3-5-3z"></path>',
+  },
+  {
+    name: 'Facebook',
+    href: 'https://facebook.com/cvarkov.official',
+    icon: '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>',
+  },
+];
+
+const visibleLinks = links.filter((link) => !exclude.includes(link.name));
+
+const variantClass =
+  variant === 'dark'
+    ? 'bg-soil text-cream hover:bg-bordo'
+    : variant === 'header'
+      ? 'bg-transparent text-ink/80 hover:text-bordo'
+      : 'bg-cream/10 text-cream hover:bg-bordo hover:text-cream';
+---
+
+<ul class={`flex items-center gap-4 ${className}`}>
+  {visibleLinks.map((link) => (
+    <li>
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors ${variantClass}`}
+        aria-label={link.name}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={link.icon} />
+      </a>
+    </li>
+  ))}
+</ul>

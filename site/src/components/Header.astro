@@ -1,0 +1,99 @@
+---
+import SocialLinks from './SocialLinks.astro';
+
+const nav = [
+  { href: '/', label: 'Početna' },
+  { href: '/video', label: 'Video' },
+  { href: '/predstave', label: 'Predstave' },
+  { href: '/kontakt', label: 'Kontakt' },
+];
+
+const current = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-ink/10">
+  <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+    <nav
+      class="grid grid-cols-[1fr_auto_1fr] items-center h-24"
+      aria-label="Glavna navigacija"
+    >
+      {/* Left: desktop nav */}
+      <ul class="hidden md:flex items-center gap-6 justify-start">
+        {nav.map((item) => {
+          const isActive = current === item.href || current.startsWith(`${item.href}/`);
+          return (
+            <li>
+              <a
+                href={item.href}
+                class={`text-sm font-semibold tracking-wide uppercase transition-colors ${
+                  isActive ? 'text-bordo' : 'text-ink/70 hover:text-bordo'
+                }`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+
+      {/* Left: mobile menu toggle */}
+      <details class="md:hidden group" id="mobile-menu">
+        <summary
+          class="list-none p-2 text-ink cursor-pointer w-fit"
+          aria-label="Otvori meni"
+        >
+          <svg class="group-open:hidden" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <svg class="hidden group-open:block" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </summary>
+        <div class="absolute top-24 left-0 right-0 bg-cream border-b border-ink/10 px-4 py-5 shadow-xl">
+          <ul class="flex flex-col gap-4">
+            {nav.map((item) => {
+              const isActive = current === item.href || current.startsWith(`${item.href}/`);
+              return (
+                <li>
+                  <a
+                    href={item.href}
+                    class={`block text-base font-semibold uppercase tracking-wide ${
+                      isActive ? 'text-bordo' : 'text-ink/80 hover:text-bordo'
+                    }`}
+                    aria-current={isActive ? 'page' : undefined}
+                    onclick="document.getElementById('mobile-menu').removeAttribute('open')"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
+            <li class="pt-3 border-t border-ink/10">
+              <SocialLinks variant="header" />
+            </li>
+          </ul>
+        </div>
+      </details>
+
+      {/* Center: logo */}
+      <a href="/" class="flex items-center justify-center shrink-0 focus-visible:outline-offset-4">
+        <img
+          src="/logo.png"
+          alt="Đorđe Cvarkov"
+          class="h-16 w-auto"
+          width="112"
+          height="112"
+        />
+        <span class="sr-only">Đorđe Cvarkov — zvanični sajt</span>
+      </a>
+
+      {/* Right: socials */}
+      <div class="hidden md:flex items-center justify-end">
+        <SocialLinks variant="header" />
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

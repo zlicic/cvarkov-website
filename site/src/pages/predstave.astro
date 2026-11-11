@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import ShowList from '../components/ShowList.astro';
+
+const shows = await getCollection('shows');
+const sorted = shows.sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+
+const upcoming = sorted.filter((s) => s.data.status === 'upcoming' || s.data.status === 'declined');
+---
+
+<Layout title="Predstave" description="Najave predstava Đorđa Cvarkova — termini, lokacije i karte.">
+  <section class="bg-hay py-16 sm:py-24">
+    <div class="max-w-screen-2xl mx-auto px-4 lg:px-6 text-center">
+      <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo mb-2">Uživo</p>
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mb-6">Predstave</h1>
+      <p class="text-lg sm:text-xl text-ink/80 max-w-2xl mx-auto">
+        Termini, lokacije i karte za predstave Đorđa Cvarkova.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-24 bg-paper">
+    <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+      {upcoming.length > 0 ? (
+        <div class="mb-16">
+          <ShowList shows={upcoming} title="Naredni nastupi" />
+        </div>
+      ) : (
+        <p class="text-center text-lg text-ink/80 mb-16">
+          Trenutno nema najavljenih predstava.
+        </p>
+      )}
+
+      <div class="bg-hay border border-ink/10 rounded-2xl p-8 sm:p-12 text-center">
+        <h2 class="font-display text-2xl sm:text-3xl text-ink mb-3">Pozovi me u tvoj grad</h2>
+        <p class="text-ink/70 max-w-xl mx-auto mb-6">
+          Nemaš datum u svom gradu? Ako želiš da organizujemo predstavu — piši mi.
+        </p>
+        <a
+          href="/kontakt"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-bordo text-cream text-sm font-bold uppercase tracking-wide rounded hover:bg-bordo-dark transition-colors"
+        >
+          Pošalji upit
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-24 bg-hay">
+    <div class="max-w-xl mx-auto px-4 lg:px-6 text-center">
+      <h2 class="font-display text-3xl text-ink mb-4">Budi među prvima</h2>
+      <p class="text-ink/70 text-lg mb-6">
+        Prati Đorđa da ne propustiš najave za predstave, novu sezonu i druge projekte.
+      </p>
+      <SocialLinks variant="dark" class="justify-center" />
+    </div>
+  </section>
+</Layout>

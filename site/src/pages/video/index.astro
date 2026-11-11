@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { slugify } from '../../lib/slugify';
+
+const allSeries = await getCollection('series');
+const episodes = await getCollection('episodes');
+
+const countBySeries = new Map<string, number>();
+for (const ep of episodes) {
+  const title = ep.data.series;
+  countBySeries.set(title, (countBySeries.get(title) ?? 0) + 1);
+}
+
+function videoLabel(count: number) {
+  if (count === 1 || (count % 10 === 1 && count % 100 !== 11)) return 'video';
+  return 'videa';
+}
+
+const seriesList = allSeries
+  .map((entry) => ({
+    slug: slugify(entry.data.title),
+    title: entry.data.title,
+    description: entry.data.description,
+    image: entry.data.image,
+    order: entry.data.order,
+    count: countBySeries.get(entry.data.title) ?? 0,
+  }))
+  .sort((a, b) => a.order - b.order);
+---
+
+<Layout title="Video" description="Svi video zapisi Đorđa Cvarkova — serije, epizode i sadržaj iza scene.">
+  <section class="bg-hay py-16 sm:py-20">
+    <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+      <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo mb-2">Video</p>
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mb-4">Svi video zapisi</h1>
+      <p class="text-lg text-ink/80 max-w-2xl">
+        Biraj grupu videa i gledaj po sezonama, ili pogledaj šta se dešavalo iza kamere.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-24 bg-paper">
+    <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {seriesList.map((s) => (
+          <a
+            href={`/video/${s.slug}`}
+            class="group bg-paper border border-ink/10 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow"
+          >
+            <div class="aspect-video bg-stone/10 overflow-hidden">
+              <img
+                src={s.image}
+                alt={s.title}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="p-6">
+              <p class="text-xs font-bold uppercase tracking-wider text-bordo mb-2">
+                {s.count} {videoLabel(s.count)}
+              </p>
+              <h2 class="font-display text-2xl text-ink mb-2">{s.title}</h2>
+              <p class="text-sm text-ink/70 line-clamp-3">{s.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
