@@ -12,3 +12,7 @@ facebook: https://facebook.com/cvarkov.official
 Rođen je iz potrebe da se priča o običnim ljudima, selima koje se ne vide na televiziji i humoru koji ne traži dozvolu. Njegov moto je jednostavan: ako ne znaš, pitaj. Ako znaš, objasni.
 
 U seriji **Cvarkov Objasnjava** obilazi regije, upoznaje ljude i razbija mitove o životu „na selu“. Prva sezona je posvećena Bačkoj.
+
+Kroz svaku epizodu, Cvarkov pokušava da odgovori na pitanja koja mnoge muče — od poljoprivrede i tradicije, do savremenih izazova sa kojima se susreću stanovnici ruralnih sredina. Njegov pristup je iskren, ponekad sarkastičan, ali uvek sa ciljem da zabavi i educira.
+
+Publika ga voli zbog autentičnosti. Nema šminkanja, nema glume za kameru — samo on, selo i priča. Ako nešto nije jasno, Cvarkov će to objasniti. I neće stati dok ne bude.

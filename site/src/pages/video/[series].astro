@@ -41,7 +41,7 @@ const episodeData = filtered.map((ep) => ({
 
 <Layout title={title} description={description}>
   <section class="bg-hay py-16 sm:py-20">
-    <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+    <div class="max-w-7xl mx-auto px-4 lg:px-6">
       <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo mb-2">
         <a href="/video" class="hover:text-ink transition-colors text-bordo">Video</a>
         <span class="mx-2">/</span>
@@ -55,7 +55,7 @@ const episodeData = filtered.map((ep) => ({
   </section>
 
   <section class="py-16 sm:py-24 bg-paper">
-    <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+    <div class="max-w-7xl mx-auto px-4 lg:px-6">
       <SeasonTabs episodes={episodeData} client:load />
     </div>
   </section>

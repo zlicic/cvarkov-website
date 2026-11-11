@@ -1,95 +1,128 @@
 ---
-import SocialLinks from './SocialLinks.astro';
-
-const nav = [
+const leftNav = [
   { href: '/', label: 'Početna' },
   { href: '/video', label: 'Video' },
+];
+
+const rightNav = [
   { href: '/predstave', label: 'Predstave' },
   { href: '/kontakt', label: 'Kontakt' },
 ];
+
+const mobileNav = [...leftNav, ...rightNav];
 
 const current = Astro.url.pathname;
 ---
 
 <header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-ink/10 mb-11">
-  <div class="max-w-screen-2xl mx-auto">
+  <div class="max-w-7xl mx-auto px-4 lg:px-6">
     <nav
-      class="flex items-center justify-between h-24"
+      class="flex items-center justify-between h-18 md:h-24 md:grid md:grid-cols-[1fr_auto_1fr]"
       aria-label="Glavna navigacija"
     >
-      {/* Left: desktop nav */}
-      <ul class="hidden md:flex items-center gap-6 justify-start pl-4 lg:pl-6">
-        {nav.map((item) => {
-          const isActive = current === item.href || current.startsWith(`${item.href}/`);
-          return (
-            <li>
-              <a
-                href={item.href}
-                class={`relative py-1 text-sm font-bold tracking-wide uppercase transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-bordo after:transition-opacity ${
-                  isActive ? 'text-bordo after:opacity-100' : 'text-ink hover:text-bordo after:opacity-0'
-                }`}
-                aria-current={isActive ? 'page' : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-
-      {/* Left: mobile menu toggle */}
-      <details class="md:hidden group" id="mobile-menu">
-        <summary
-          class="list-none p-2 text-ink cursor-pointer w-fit"
-          aria-label="Otvori meni"
-        >
-          <svg class="group-open:hidden" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-          <svg class="hidden group-open:block" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </summary>
-        <div class="absolute top-24 left-0 right-0 bg-cream border-b border-ink/10 px-4 py-5 shadow-xl">
-          <ul class="flex flex-col gap-4">
-            {nav.map((item) => {
-              const isActive = current === item.href || current.startsWith(`${item.href}/`);
-              return (
-                <li>
-                  <a
-                    href={item.href}
-                    class={`block text-base font-semibold uppercase tracking-wide ${
-                      isActive ? 'text-bordo' : 'text-ink/80 hover:text-bordo'
-                    }`}
-                    aria-current={isActive ? 'page' : undefined}
-                    onclick="document.getElementById('mobile-menu').removeAttribute('open')"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              );
-            })}
-            <li class="pt-3 border-t border-ink/10">
-              <SocialLinks variant="header" />
-            </li>
-          </ul>
-        </div>
-      </details>
-
-      {/* Center: logo */}
+      {/* Mobile: logo left */}
       <a
         href="/"
-        class="absolute left-1/2 top-2 h-[120px] w-auto -translate-x-1/2 overflow-hidden rounded-full border-4 border-cream bg-cream shadow-xl focus-visible:outline-offset-4"
+        class="md:hidden h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-cream bg-cream shadow-md focus-visible:outline-offset-4"
         aria-label="Đorđe Cvarkov — zvanični sajt"
       >
         <img
           src="/logo.png"
           alt="Đorđe Cvarkov"
           class="h-full w-full object-cover"
-          width="128"
-          height="128"
+          width="56"
+          height="56"
         />
       </a>
 
-      {/* Right: socials */}
-      <div class="hidden md:flex items-center justify-end">
-        <SocialLinks variant="header" />
+      {/* Left: Početna + Video */}
+      <div class="hidden md:flex items-center justify-start md:justify-end md:pr-8">
+        <ul class="flex items-center gap-6">
+          {leftNav.map((item) => {
+            const isActive = current === item.href || current.startsWith(`${item.href}/`);
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  class={`relative py-1 text-sm font-bold tracking-wide uppercase transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-bordo after:transition-opacity ${
+                    isActive ? 'text-bordo after:opacity-100' : 'text-ink hover:text-bordo after:opacity-0'
+                  }`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      {/* Desktop: centered logo */}
+      <a
+        href="/"
+        class="hidden md:block h-[120px] w-auto shrink-0 overflow-hidden rounded-full border-2 border-cream bg-cream shadow-md focus-visible:outline-offset-4"
+        aria-label="Đorđe Cvarkov — zvanični sajt"
+      >
+        <img
+          src="/logo.png"
+          alt="Đorđe Cvarkov"
+          class="h-full w-full object-cover"
+          width="120"
+          height="120"
+        />
+      </a>
+
+      {/* Right: Predstave + Kontakt */}
+      <div class="flex items-center justify-end md:justify-start md:pl-8">
+        <ul class="hidden md:flex items-center gap-6">
+          {rightNav.map((item) => {
+            const isActive = current === item.href || current.startsWith(`${item.href}/`);
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  class={`relative py-1 text-sm font-bold tracking-wide uppercase transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-bordo after:transition-opacity ${
+                    isActive ? 'text-bordo after:opacity-100' : 'text-ink hover:text-bordo after:opacity-0'
+                  }`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+
+        <details class="md:hidden group" id="mobile-menu">
+          <summary
+            class="list-none p-2 text-ink cursor-pointer w-fit"
+            aria-label="Otvori meni"
+          >
+            <svg class="group-open:hidden" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            <svg class="hidden group-open:block" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </summary>
+          <div class="absolute top-18 md:top-24 left-0 right-0 bg-cream border-b border-ink/10 px-4 py-5 shadow-xl">
+            <ul class="flex flex-col gap-4">
+              {mobileNav.map((item) => {
+                const isActive = current === item.href || current.startsWith(`${item.href}/`);
+                return (
+                  <li>
+                    <a
+                      href={item.href}
+                      class={`block text-base font-semibold uppercase tracking-wide ${
+                        isActive ? 'text-bordo' : 'text-ink/80 hover:text-bordo'
+                      }`}
+                      aria-current={isActive ? 'page' : undefined}
+                      onclick="document.getElementById('mobile-menu').removeAttribute('open')"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </details>
       </div>
     </nav>
   </div>

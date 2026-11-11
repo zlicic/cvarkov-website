@@ -47,7 +47,7 @@ const dateLabel = releaseDate.toLocaleDateString('sr-Latn-RS', {
 
 <Layout title={`${title} | ${series}`} description={description}>
   <section class="bg-hay py-16 sm:py-20">
-    <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+    <div class="max-w-7xl mx-auto px-4 lg:px-6">
       <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo mb-2">
         <a href="/video" class="hover:text-ink transition-colors text-bordo">Video</a>
         <span class="mx-2">/</span>
@@ -65,7 +65,7 @@ const dateLabel = releaseDate.toLocaleDateString('sr-Latn-RS', {
   </section>
 
   <section class="py-12 sm:py-16 bg-paper">
-    <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+    <div class="max-w-7xl mx-auto px-4 lg:px-6">
       {isReleased && embedUrl ? (
         <div class="space-y-6">
           <div class="relative w-full aspect-video bg-stone/10 rounded-2xl overflow-hidden shadow-xl">
