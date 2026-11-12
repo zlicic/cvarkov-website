@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import EpisodeCard from '../components/EpisodeCard.astro';
 import ShowList from '../components/ShowList.astro';
+import { withBase } from '../lib/base';
 
 const homeImage = 'https://i.ytimg.com/vi/diGgRkFFGcM/maxresdefault.jpg';
 
@@ -31,8 +32,8 @@ const upcomingShows = shows
     caption="— Kancelarija, ponedeljak ujutru."
     stamp="Ako ne<br>znaš,<br>pitaj!"
   >
-    <a href="/video" class="btn btn-primary">Gledaj epizode</a>
-    <a href="/predstave" class="btn">Predstave</a>
+    <a href={withBase('/video')} class="btn btn-primary">Gledaj epizode</a>
+    <a href={withBase('/predstave')} class="btn">Predstave</a>
   </PageHeader>
 
   {/* Ko je Đorđe — kratko */}
@@ -47,7 +48,7 @@ const upcomingShows = shows
           Fiktivni komičarski lik koji obilazi sela Vojvodine i objašnjava svakodnevne stvari — direktno,
           sa mnogo šale i bez uvijanja.
         </p>
-        <a href="/video" class="link-more inline-block mt-8">Upoznaj ga kroz epizode →</a>
+        <a href={withBase('/video')} class="link-more inline-block mt-8">Upoznaj ga kroz epizode →</a>
       </div>
 
       <figure class="moto-card">
@@ -68,7 +69,7 @@ const upcomingShows = shows
             <p class="font-typewriter text-sm uppercase tracking-[0.2em] text-stone mb-3">Najnovije</p>
             <h2 class="font-slab font-bold text-4xl sm:text-5xl leading-none text-ink">Najnoviji <span class="text-bordo">video</span></h2>
           </div>
-          <a href="/video" class="link-more self-start sm:self-auto">Svi video zapisi →</a>
+          <a href={withBase('/video')} class="link-more self-start sm:self-auto">Svi video zapisi →</a>
         </div>
         <div class="video-tilt grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-8">
           {latestThree.map((episode) => <EpisodeCard episode={episode} />)}
@@ -86,7 +87,7 @@ const upcomingShows = shows
             <p class="font-typewriter text-sm uppercase tracking-[0.2em] text-stone mb-3">Uživo</p>
             <h2 class="font-slab font-bold text-4xl sm:text-5xl leading-none text-ink">Predstave</h2>
           </div>
-          <a href="/predstave" class="link-more self-start sm:self-auto">Svi termini →</a>
+          <a href={withBase('/predstave')} class="link-more self-start sm:self-auto">Svi termini →</a>
         </div>
         <ShowList shows={upcomingShows} />
       </div>

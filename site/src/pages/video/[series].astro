@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import SeasonTabs from '../../components/SeasonTabs.tsx';
 import { slugify } from '../../lib/slugify';
+import { withBase } from '../../lib/base';
 
 export async function getStaticPaths() {
   const allSeries = await getCollection('series');
@@ -42,7 +43,7 @@ const episodeData = filtered.map((ep) => ({
 
 <Layout title={title} description={description}>
   <PageHeader
-    crumbs={[{ href: '/video', label: 'Video' }, { label: 'Serija' }]}
+    crumbs={[{ href: withBase('/video'), label: 'Video' }, { label: 'Serija' }]}
     title={title}
     description={description}
     image={image}
@@ -51,7 +52,7 @@ const episodeData = filtered.map((ep) => ({
     stamp="Gledaj<br>redom!"
   >
     <a href="#epizode" class="btn btn-primary">Epizode</a>
-    <a href="/video" class="btn">Sve grupe</a>
+    <a href={withBase('/video')} class="btn">Sve grupe</a>
   </PageHeader>
 
   <section id="epizode" class="bg-paper py-20 sm:py-24 scroll-mt-24">

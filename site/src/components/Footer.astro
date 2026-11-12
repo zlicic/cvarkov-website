@@ -1,11 +1,12 @@
 ---
 import SocialLinks from './SocialLinks.astro';
+import { withBase } from '../lib/base';
 
 const nav = [
-  { href: '/', label: 'Početna' },
-  { href: '/video', label: 'Video' },
-  { href: '/predstave', label: 'Predstave' },
-  { href: '/kontakt', label: 'Kontakt' },
+  { href: withBase('/'), label: 'Početna' },
+  { href: withBase('/video'), label: 'Video' },
+  { href: withBase('/predstave'), label: 'Predstave' },
+  { href: withBase('/kontakt'), label: 'Kontakt' },
 ];
 ---
 
@@ -13,11 +14,11 @@ const nav = [
   <div class="max-w-6xl mx-auto px-4 lg:px-6 pt-16 pb-10">
     <div class="grid gap-12 md:grid-cols-[auto_1fr_auto] md:items-center">
       <a
-        href="/"
+        href={withBase('/')}
         class="mx-auto md:mx-0 block h-[124px] w-[124px] rounded-full overflow-hidden ring-2 ring-cream/20 ring-offset-4 ring-offset-ink -rotate-6 hover:rotate-0 transition-transform"
         aria-label="Đorđe Čvarkov — zvanični sajt"
       >
-        <img src="/logo.png" alt="Đorđe Čvarkov" class="h-full w-full object-cover" width="124" height="124" />
+        <img src={withBase('logo.png')} alt="Đorđe Čvarkov" class="h-full w-full object-cover" width="124" height="124" />
       </a>
 
       <div class="text-center md:text-left">

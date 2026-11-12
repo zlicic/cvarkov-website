@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { slugify } from '../lib/slugify';
+import { withBase } from '../lib/base';
 
 interface Props {
   episode: CollectionEntry<'episodes'>;
@@ -9,7 +10,7 @@ interface Props {
 const { episode } = Astro.props;
 const { title, series, season, episodeNumber, region, village, releaseDate, thumbnail, description, type } = episode.data;
 
-const episodeHref = `/video/${slugify(series)}/${slugify(title)}`;
+const episodeHref = withBase(`/video/${slugify(series)}/${slugify(title)}`);
 
 const isReleased = releaseDate.getTime() <= Date.now();
 const canWatch = type === 'episode' && isReleased;

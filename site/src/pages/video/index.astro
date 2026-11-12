@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import { slugify } from '../../lib/slugify';
+import { withBase } from '../../lib/base';
 
 const videoImage = 'https://img.youtube.com/vi/DY82l1h9BiQ/hqdefault.jpg';
 
@@ -43,7 +44,7 @@ const seriesList = allSeries
     stamp="Strogo<br>poverljivo"
   >
     {seriesList.slice(0, 2).map((s, i) => (
-      <a href={`/video/${s.slug}`} class:list={['btn', i === 0 && 'btn-primary']}>{s.title}</a>
+      <a href={withBase(`/video/${s.slug}`)} class:list={['btn', i === 0 && 'btn-primary']}>{s.title}</a>
     ))}
   </PageHeader>
 
@@ -57,7 +58,7 @@ const seriesList = allSeries
       <div class="video-tilt grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-8">
         {seriesList.map((s) => (
           <article class="group">
-            <a href={`/video/${s.slug}`} class="video-print" aria-label={s.title}>
+            <a href={withBase(`/video/${s.slug}`)} class="video-print" aria-label={s.title}>
               <span class="video-badge">{s.count} {videoLabel(s.count)}</span>
               <img src={s.image} alt="" class="aspect-[4/3]" loading="lazy" decoding="async" />
               <div class="video-bar">
@@ -66,7 +67,7 @@ const seriesList = allSeries
               </div>
             </a>
             <h2 class="font-slab font-bold text-3xl leading-tight text-ink mt-5">
-              <a href={`/video/${s.slug}`} class="hover:text-bordo transition-colors">{s.title}</a>
+              <a href={withBase(`/video/${s.slug}`)} class="hover:text-bordo transition-colors">{s.title}</a>
             </h2>
             <p class="text-[0.95rem] leading-relaxed text-stone mt-2 line-clamp-3">{s.description}</p>
           </article>

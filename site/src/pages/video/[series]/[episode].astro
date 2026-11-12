@@ -4,6 +4,7 @@ import Layout from '../../../layouts/Layout.astro';
 import { slugify } from '../../../lib/slugify';
 import { getYouTubeEmbedUrl } from '../../../lib/youtube';
 import EpisodeCard from '../../../components/EpisodeCard.astro';
+import { withBase } from '../../../lib/base';
 
 export async function getStaticPaths() {
   const episodes = await getCollection('episodes');
@@ -60,7 +61,7 @@ const dateLabel = releaseDate.toLocaleDateString('sr-Latn-RS', {
   year: 'numeric',
 });
 const details = [
-  { label: 'Serija', value: series, href: `/video/${seriesSlug}` },
+  { label: 'Serija', value: series, href: withBase(`/video/${seriesSlug}`) },
   { label: 'Sezona', value: String(season) },
   { label: 'Epizoda', value: episodeNumber === 0 ? 'Najava' : String(episodeNumber) },
   { label: 'Lokacija', value: `${region}${village ? `, ${village}` : ''}` },
@@ -73,9 +74,9 @@ const details = [
     <div class="max-w-6xl mx-auto px-4 lg:px-6 pt-14 sm:pt-20 pb-12">
       <span class="accent-dash" aria-hidden="true"></span>
       <nav aria-label="Putanja" class="font-typewriter text-sm uppercase tracking-[0.2em] text-stone mb-4">
-        <a href="/video" class="text-bordo hover:text-ink transition-colors">Video</a>
+        <a href={withBase('/video')} class="text-bordo hover:text-ink transition-colors">Video</a>
         <span class="mx-2 text-stone/60" aria-hidden="true">/</span>
-        <a href={`/video/${seriesSlug}`} class="text-bordo hover:text-ink transition-colors">{series}</a>
+        <a href={withBase(`/video/${seriesSlug}`)} class="text-bordo hover:text-ink transition-colors">{series}</a>
         <span class="mx-2 text-stone/60" aria-hidden="true">/</span>
         <span>S{season} · {episodeLabel}</span>
       </nav>
@@ -142,7 +143,7 @@ const details = [
             <p class="font-typewriter text-sm uppercase tracking-[0.2em] text-stone mb-3">{series}</p>
             <h2 class="font-slab font-bold text-4xl sm:text-5xl leading-none text-ink">Još <span class="text-bordo">epizoda</span></h2>
           </div>
-          <a href={`/video/${seriesSlug}`} class="link-more self-start sm:self-auto">Sve epizode →</a>
+          <a href={withBase(`/video/${seriesSlug}`)} class="link-more self-start sm:self-auto">Sve epizode →</a>
         </div>
         <div class="video-tilt grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-8">
           {moreEpisodes.map((ep) => <EpisodeCard episode={ep} />)}

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { slugify } from '../lib/slugify';
+import { withBase } from '../lib/base';
 
 type EpisodeType = 'episode' | 'teaser' | 'season-announcement';
 
@@ -138,7 +139,7 @@ function UpcomingCard({ episode, label }: { episode: Episode; label: string }) {
 
 function EpisodeCard({ episode }: { episode: Episode }) {
   const released = episode.season === 1 || isReleased(episode.releaseDate);
-  const href = `/video/${slugify(episode.series)}/${slugify(episode.title)}`;
+  const href = withBase(`/video/${slugify(episode.series)}/${slugify(episode.title)}`);
 
   const media = (
     <>

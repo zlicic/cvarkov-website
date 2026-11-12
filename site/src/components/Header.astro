@@ -1,12 +1,15 @@
 ---
+import { withBase } from '../lib/base';
+
+const homeHref = withBase('/');
 const leftNav = [
-  { href: '/', label: 'Početna' },
-  { href: '/video', label: 'Video' },
+  { href: homeHref, label: 'Početna' },
+  { href: withBase('/video'), label: 'Video' },
 ];
 
 const rightNav = [
-  { href: '/predstave', label: 'Predstave' },
-  { href: '/kontakt', label: 'Kontakt' },
+  { href: withBase('/predstave'), label: 'Predstave' },
+  { href: withBase('/kontakt'), label: 'Kontakt' },
 ];
 
 const mobileNav = [...leftNav, ...rightNav];
@@ -22,12 +25,12 @@ const current = Astro.url.pathname;
     >
       {/* Mobile: logo left */}
       <a
-        href="/"
+        href={homeHref}
         class="md:hidden h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-cream bg-cream shadow-md focus-visible:outline-offset-4"
         aria-label="Đorđe Čvarkov — zvanični sajt"
       >
         <img
-          src="/logo.png"
+          src={withBase('logo.png')}
           alt="Đorđe Čvarkov"
           class="h-full w-full object-cover"
           width="56"
@@ -39,7 +42,7 @@ const current = Astro.url.pathname;
       <div class="hidden md:flex items-center justify-start md:justify-end md:pr-8 mb-4">
         <ul class="flex items-center gap-8">
           {leftNav.map((item) => {
-            const isActive = current === item.href || current.startsWith(`${item.href}/`);
+            const isActive = current === item.href || (item.href !== homeHref && current.startsWith(`${item.href}/`));
             return (
               <li>
                 <a
@@ -59,12 +62,12 @@ const current = Astro.url.pathname;
 
       {/* Desktop: centered logo */}
       <a
-        href="/"
+        href={homeHref}
         class="hidden md:block h-[96px] w-auto shrink-0 overflow-hidden rounded-full border-2 border-cream bg-cream shadow-md focus-visible:outline-offset-4"
         aria-label="Đorđe Čvarkov — zvanični sajt"
       >
         <img
-          src="/logo.png"
+          src={withBase('logo.png')}
           alt="Đorđe Čvarkov"
           class="h-full w-full object-cover"
           width="96"
@@ -76,7 +79,7 @@ const current = Astro.url.pathname;
       <div class="flex items-center justify-end md:justify-start md:pl-8 mb-4">
         <ul class="hidden md:flex items-center gap-8">
           {rightNav.map((item) => {
-            const isActive = current === item.href || current.startsWith(`${item.href}/`);
+            const isActive = current === item.href || (item.href !== homeHref && current.startsWith(`${item.href}/`));
             return (
               <li>
                 <a
@@ -104,7 +107,7 @@ const current = Astro.url.pathname;
           <div class="absolute top-18 left-0 right-0 bg-cream border-b border-ink/10 px-4 py-5 shadow-xl">
             <ul class="flex flex-col gap-4">
               {mobileNav.map((item) => {
-                const isActive = current === item.href || current.startsWith(`${item.href}/`);
+                const isActive = current === item.href || (item.href !== homeHref && current.startsWith(`${item.href}/`));
                 return (
                   <li>
                     <a
