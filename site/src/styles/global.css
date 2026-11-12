@@ -140,7 +140,7 @@ button:focus-visible {
 .photo-print .photo-frame {
   position: relative;
   background: var(--color-paper);
-  padding: 14px 14px 48px;
+  padding: 14px 14px 0;
   transform: rotate(2deg);
   box-shadow: 0 18px 40px rgb(36 28 21 / 0.22), 0 2px 4px rgb(36 28 21 / 0.15);
 }
@@ -152,15 +152,14 @@ button:focus-visible {
   filter: grayscale(1) sepia(0.55) contrast(1.05) brightness(0.95);
 }
 .photo-print figcaption {
-  position: absolute;
-  right: 18px;
-  bottom: 14px;
-  max-width: calc(100% - 36px);
+  position: relative;
   text-align: right;
   font-family: var(--font-typewriter);
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 1.8vw, 0.9rem);
   line-height: 1.25;
   color: var(--color-stone);
+  padding: 0.85rem 0.35rem 0.9rem;
+  text-wrap: balance;
 }
 .photo-tape {
   position: absolute;
