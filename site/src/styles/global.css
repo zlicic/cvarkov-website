@@ -15,6 +15,7 @@
   --font-display: 'Oswald', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-typewriter: 'Special Elite', 'Courier New', monospace;
+  --font-slab: 'Zilla Slab', Georgia, serif;
 }
 
 html {
@@ -27,9 +28,14 @@ body {
   color: var(--color-ink);
 }
 
-h1,
-h2,
-h3,
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+}
+
 .font-display {
   font-family: var(--font-display);
 }
@@ -78,4 +84,200 @@ a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--color-clay);
   outline-offset: 2px;
+}
+
+/* ===================== Redizajn: papir / štampa / pečat ===================== */
+
+/* Papirna tačkasta tekstura */
+.paper-dots {
+  background-color: var(--color-cream);
+  background-image: radial-gradient(color-mix(in srgb, var(--color-ink) 6%, transparent) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+/* Kratka bordo crtica iznad naslova */
+.accent-dash {
+  display: block;
+  width: 3rem;
+  height: 3px;
+  background: var(--color-bordo);
+  margin-bottom: 1.4rem;
+}
+
+/* Dugmad */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-typewriter);
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.4rem;
+  border: 2px solid var(--color-ink);
+  color: var(--color-ink);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn:hover { background: var(--color-ink); color: var(--color-cream); }
+.btn-primary { background: var(--color-bordo); border-color: var(--color-bordo); color: var(--color-cream); }
+.btn-primary:hover { background: var(--color-bordo-dark); border-color: var(--color-bordo-dark); color: var(--color-cream); }
+.btn-sm { padding: 0.6rem 1rem; font-size: 0.8rem; }
+
+/* Link sa podvlakom */
+.link-more {
+  font-family: var(--font-typewriter);
+  color: var(--color-bordo);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--color-bordo);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.link-more:hover { color: var(--color-bordo-dark); border-color: var(--color-bordo-dark); }
+
+/* Fotografija kao odštampana slika */
+.photo-print { position: relative; margin: 0; width: 100%; max-width: 560px; }
+.photo-print .photo-frame {
+  background: var(--color-paper);
+  padding: 14px 14px 48px;
+  transform: rotate(2deg);
+  box-shadow: 0 18px 40px rgb(36 28 21 / 0.22), 0 2px 4px rgb(36 28 21 / 0.15);
+}
+.photo-print img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  filter: grayscale(1) sepia(0.55) contrast(1.05) brightness(0.95);
+}
+.photo-print figcaption {
+  position: absolute;
+  right: 26px;
+  bottom: 16px;
+  font-family: var(--font-typewriter);
+  font-size: 0.85rem;
+  color: var(--color-stone);
+}
+.photo-tape {
+  position: absolute;
+  top: -12px;
+  left: 42%;
+  z-index: 1;
+  width: 110px;
+  height: 28px;
+  transform: rotate(-4deg);
+  background: color-mix(in srgb, var(--color-hay) 90%, transparent);
+}
+
+/* Bordo pečat */
+.stamp {
+  position: absolute;
+  left: -40px;
+  bottom: -32px;
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-slab);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--color-bordo);
+  background: color-mix(in srgb, var(--color-cream) 92%, transparent);
+  border: 3px solid var(--color-bordo);
+  outline: 1.5px solid var(--color-bordo);
+  outline-offset: -10px;
+  transform: rotate(-14deg);
+}
+@media (max-width: 640px) {
+  .stamp { width: 104px; height: 104px; font-size: 0.9rem; left: -6px; bottom: -36px; }
+}
+
+/* Kartica u obliku ulaznice (kontakt) */
+.ticket {
+  position: relative;
+  background: var(--color-cream);
+  border: 1px solid var(--color-hay);
+  padding: 1.6rem 1.5rem 1.4rem;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.ticket::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 3.4rem;
+  border-top: 2px dashed var(--color-hay);
+}
+.ticket:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-bordo);
+  box-shadow: 0 10px 24px rgb(36 28 21 / 0.12);
+}
+
+/* Video kartica u ramu */
+.video-print {
+  position: relative;
+  display: block;
+  background: var(--color-paper);
+  padding: 10px 10px 0;
+  border: 1px solid var(--color-hay);
+  box-shadow: 0 8px 22px rgb(36 28 21 / 0.14);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.video-tilt > :nth-child(3n + 1) .video-print { transform: rotate(-1.2deg); }
+.video-tilt > :nth-child(3n + 2) .video-print { transform: rotate(0.8deg); }
+.video-tilt > :nth-child(3n + 3) .video-print { transform: rotate(-0.5deg); }
+.video-tilt > * .video-print:hover,
+.group:hover .video-print { transform: rotate(0deg) translateY(-4px); box-shadow: 0 14px 30px rgb(36 28 21 / 0.2); }
+.video-print img { display: block; width: 100%; object-fit: cover; filter: sepia(0.25) contrast(1.03); }
+.video-badge {
+  position: absolute;
+  z-index: 2;
+  top: 22px;
+  left: -8px;
+  background: var(--color-bordo);
+  color: var(--color-cream);
+  font-family: var(--font-typewriter);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.2);
+}
+.video-play {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--color-bordo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
+}
+.video-play::after {
+  content: "";
+  border-left: 16px solid var(--color-cream);
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  margin-left: 4px;
+}
+.video-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-typewriter);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+  padding: 10px 4px 12px;
 }

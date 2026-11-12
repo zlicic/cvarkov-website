@@ -1,57 +1,59 @@
 ---
 interface Props {
-  eyebrow: string;
+  eyebrow?: string;
+  /** Prvi red naslova (tamna boja) */
   title: string;
+  /** Drugi red naslova (bordo) */
+  titleAccent?: string;
   description: string;
-  image?: string;
+  image: string;
   imageAlt?: string;
+  /** Potpis ispod fotografije */
+  caption?: string;
+  /** Tekst u pečatu; <br> je dozvoljen */
+  stamp?: string;
+  /** Putanja (breadcrumbs) iznad naslova, umesto eyebrow teksta */
+  crumbs?: { href?: string; label: string }[];
 }
 
-const { eyebrow, title, description, image, imageAlt = '' } = Astro.props;
+const { eyebrow, title, titleAccent, description, image, imageAlt = '', caption, stamp, crumbs } = Astro.props;
 ---
 
-<section
-  class:list={[
-    'relative py-16 sm:py-24',
-    image && 'min-h-[480px] flex items-center bg-cover bg-center bg-no-repeat',
-  ]}
-  style={image ? `background-image: url('${image}')` : undefined}
-  aria-label={imageAlt}
->
-  {
-    image && (
-      <div
-        class="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/55 to-ink/30"
-        aria-hidden="true"
-      />
-    )
-  }
+<section class="paper-dots border-b border-ink/10 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-4 lg:px-6 py-16 sm:py-24 grid gap-14 lg:gap-16 lg:grid-cols-[1fr_1.05fr] items-center">
+    <div>
+      <span class="accent-dash" aria-hidden="true"></span>
+      {crumbs ? (
+        <nav aria-label="Putanja" class="font-typewriter text-sm uppercase tracking-[0.2em] text-stone mb-3">
+          {crumbs.map((c, i) => (
+            <>
+              {i > 0 && <span class="mx-2 text-stone/60" aria-hidden="true">/</span>}
+              {c.href ? <a href={c.href} class="text-bordo hover:text-ink transition-colors">{c.label}</a> : <span>{c.label}</span>}
+            </>
+          ))}
+        </nav>
+      ) : eyebrow && (
+        <p class="font-typewriter text-sm uppercase tracking-[0.2em] text-stone mb-3">{eyebrow}</p>
+      )}
+      <h1 id="page-title" class="font-slab font-bold text-5xl sm:text-6xl lg:text-7xl leading-[0.95] text-ink">
+        {title}
+        {titleAccent && (<><br /><span class="text-bordo">{titleAccent}</span></>)}
+      </h1>
+      <p class="font-typewriter text-lg leading-relaxed text-stone mt-6 max-w-md">{description}</p>
+      {Astro.slots.has('default') && (
+        <div class="mt-8 flex flex-wrap gap-3">
+          <slot />
+        </div>
+      )}
+    </div>
 
-  <div class="max-w-7xl mx-auto px-4 lg:px-6 relative z-10 w-full">
-    <p
-      class:list={[
-        'text-sm uppercase tracking-[0.2em] mb-3',
-        image ? 'text-cream/70' : 'text-stone',
-      ]}
-    >
-      {eyebrow}
-    </p>
-    <h1
-      id="page-title"
-      class:list={[
-        'font-typewriter text-4xl sm:text-5xl lg:text-6xl mb-5 leading-tight',
-        image ? 'text-cream' : 'text-ink',
-      ]}
-    >
-      {title}
-    </h1>
-    <p
-      class:list={[
-        'text-lg sm:text-xl max-w-2xl leading-relaxed',
-        image ? 'text-cream/80' : 'text-ink/70',
-      ]}
-    >
-      {description}
-    </p>
+    <figure class="photo-print justify-self-center lg:justify-self-end">
+      <span class="photo-tape" aria-hidden="true"></span>
+      <div class="photo-frame">
+        <img src={image} alt={imageAlt} width="1080" height="675" loading="eager" decoding="async" />
+      </div>
+      {caption && <figcaption>{caption}</figcaption>}
+      {stamp && <span class="stamp" aria-hidden="true" set:html={stamp} />}
+    </figure>
   </div>
 </section>

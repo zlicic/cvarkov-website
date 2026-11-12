@@ -11,65 +11,41 @@ const { title, series, season, episodeNumber, region, village, releaseDate, thum
 
 const episodeHref = `/video/${slugify(series)}/${slugify(title)}`;
 
-const now = new Date();
-const isReleased = releaseDate.getTime() <= now.getTime();
-const dateLabel = releaseDate.toLocaleDateString('sr-Latn-RS', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-});
+const isReleased = releaseDate.getTime() <= Date.now();
+const canWatch = type === 'episode' && isReleased;
+const dateLabel = releaseDate.toLocaleDateString('sr-Latn-RS', { day: 'numeric', month: 'long', year: 'numeric' });
 
-const label = type === 'season-announcement'
+const badge = type === 'season-announcement'
   ? 'Najava'
   : type === 'teaser'
     ? 'Sledeća epizoda'
-    : `Epizoda ${episodeNumber}`;
+    : `S${season} · E${episodeNumber}`;
+
+const Tag = canWatch ? 'a' : 'div';
 ---
 
-<article class="group bg-paper border border-ink/10 rounded-xl overflow-hidden hover:shadow-xl transition-shadow flex flex-col h-full">
-  <div class="aspect-video bg-stone/10 overflow-hidden">
+<article class="group">
+  <Tag href={canWatch ? episodeHref : undefined} class="video-print" aria-label={canWatch ? `Gledaj: ${title}` : undefined}>
+    <span class="video-badge">{badge}</span>
     {thumbnail ? (
-      <img
-        src={thumbnail}
-        alt={`Naslovna slika epizode ${title}`}
-        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        loading="lazy"
-        decoding="async"
-      />
+      <img src={thumbnail} alt={`Naslovna slika epizode ${title}`} class="aspect-video" loading="lazy" decoding="async" />
     ) : (
-      <div class="w-full h-full flex items-center justify-center">
-        <span class="font-display text-xl text-stone/60">Uskoro</span>
+      <div class="aspect-video bg-hay flex items-center justify-center">
+        <span class="font-slab font-bold text-xl text-stone">Uskoro</span>
       </div>
     )}
-  </div>
-
-  <div class="p-5 flex flex-col flex-grow">
-    <p class="text-xs font-bold uppercase tracking-wider text-stone mb-1">{series}</p>
-    <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-bordo mb-2">
-      <span>Sezona {season}</span>
-      <span>•</span>
-      <span>{label}</span>
+    {canWatch && <span class="video-play" aria-hidden="true" />}
+    <div class="video-bar">
+      <span>{series}</span>
+      <span>{canWatch ? 'Gledaj →' : `Premijera ${dateLabel}`}</span>
     </div>
+  </Tag>
 
-    <h3 class="font-display text-xl sm:text-2xl text-ink mb-1 line-clamp-2">{title}</h3>
-
-    <p class="text-sm text-stone mb-3">
-      {region}{village ? `, ${village}` : ''}
-    </p>
-
-    <p class="text-sm text-ink/80 line-clamp-3 mb-4 flex-grow">{description}</p>
-
-    {type === 'episode' && isReleased ? (
-      <a
-        href={episodeHref}
-        class="mt-auto self-start inline-flex items-center gap-2 px-4 py-2 bg-bordo text-cream text-sm font-bold uppercase tracking-wide rounded hover:bg-bordo-dark transition-colors"
-      >
-        Gledaj epizodu
-      </a>
-    ) : (
-      <span class="mt-auto self-start inline-flex items-center gap-2 px-4 py-2 bg-hay text-stone text-sm font-bold uppercase tracking-wide rounded">
-        Premijera {dateLabel}
-      </span>
-    )}
-  </div>
+  <h3 class="font-slab font-bold text-2xl leading-tight text-ink mt-5 line-clamp-2">
+    {canWatch ? <a href={episodeHref} class="hover:text-bordo transition-colors">{title}</a> : title}
+  </h3>
+  <p class="font-typewriter text-sm uppercase tracking-[0.08em] text-bordo mt-2">
+    {region}{village ? ` · ${village}` : ''}
+  </p>
+  <p class="text-[0.95rem] leading-relaxed text-stone mt-2 line-clamp-3">{description}</p>
 </article>

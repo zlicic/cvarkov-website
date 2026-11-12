@@ -1,0 +1,75 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { slugify } from '../lib/slugify';
+
+interface Props {
+  episode: CollectionEntry<'episodes'>;
+}
+
+const { episode } = Astro.props;
+const { title, series, season, episodeNumber, region, village, releaseDate, thumbnail, description, type } = episode.data;
+
+const episodeHref = `/video/${slugify(series)}/${slugify(title)}`;
+
+const now = new Date();
+const isReleased = releaseDate.getTime() <= now.getTime();
+const dateLabel = releaseDate.toLocaleDateString('sr-Latn-RS', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const label = type === 'season-announcement'
+  ? 'Najava'
+  : type === 'teaser'
+    ? 'Sledeća epizoda'
+    : `Epizoda ${episodeNumber}`;
+---
+
+<article class="group bg-paper border border-ink/10 rounded-xl overflow-hidden hover:shadow-xl transition-shadow flex flex-col h-full">
+  <div class="aspect-video bg-stone/10 overflow-hidden">
+    {thumbnail ? (
+      <img
+        src={thumbnail}
+        alt={`Naslovna slika epizode ${title}`}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+        decoding="async"
+      />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center">
+        <span class="font-display text-xl text-stone/60">Uskoro</span>
+      </div>
+    )}
+  </div>
+
+  <div class="p-5 flex flex-col flex-grow">
+    <p class="text-xs font-bold uppercase tracking-wider text-stone mb-1">{series}</p>
+    <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-bordo mb-2">
+      <span>Sezona {season}</span>
+      <span>•</span>
+      <span>{label}</span>
+    </div>
+
+    <h3 class="font-display text-xl sm:text-2xl text-ink mb-1 line-clamp-2">{title}</h3>
+
+    <p class="text-sm text-stone mb-3">
+      {region}{village ? `, ${village}` : ''}
+    </p>
+
+    <p class="text-sm text-ink/80 line-clamp-3 mb-4 flex-grow">{description}</p>
+
+    {type === 'episode' && isReleased ? (
+      <a
+        href={episodeHref}
+        class="mt-auto self-start inline-flex items-center gap-2 px-4 py-2 bg-bordo text-cream text-sm font-bold uppercase tracking-wide rounded hover:bg-bordo-dark transition-colors"
+      >
+        Gledaj epizodu
+      </a>
+    ) : (
+      <span class="mt-auto self-start inline-flex items-center gap-2 px-4 py-2 bg-hay text-stone text-sm font-bold uppercase tracking-wide rounded">
+        Premijera {dateLabel}
+      </span>
+    )}
+  </div>
+</article>

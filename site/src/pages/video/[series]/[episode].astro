@@ -3,6 +3,7 @@ import { getCollection, getEntry } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
 import { slugify } from '../../../lib/slugify';
 import { getYouTubeEmbedUrl } from '../../../lib/youtube';
+import EpisodeCard from '../../../components/EpisodeCard.astro';
 
 export async function getStaticPaths() {
   const episodes = await getCollection('episodes');
@@ -38,37 +39,57 @@ const seriesSlug = slugify(series);
 const embedUrl = getYouTubeEmbedUrl(youtubeUrl);
 const isReleased = releaseDate.getTime() <= Date.now();
 
+const episodeLabel = episodeNumber === 0 ? 'Najava' : `Epizoda ${episodeNumber}`;
+
+const allEpisodes = await getCollection('episodes');
+const moreEpisodes = allEpisodes
+  .filter((ep) => ep.data.series === series && ep.id !== id && ep.data.type === 'episode' && ep.data.releaseDate.getTime() <= Date.now())
+  .sort((a, b) => {
+    // prvo ista sezona, pa najbliži broj epizode
+    const sa = a.data.season === season ? 0 : 1;
+    const sb = b.data.season === season ? 0 : 1;
+    if (sa !== sb) return sa - sb;
+    return Math.abs(a.data.episodeNumber - episodeNumber) - Math.abs(b.data.episodeNumber - episodeNumber);
+  })
+  .slice(0, 3);
+
+
 const dateLabel = releaseDate.toLocaleDateString('sr-Latn-RS', {
   day: 'numeric',
   month: 'long',
   year: 'numeric',
 });
+const details = [
+  { label: 'Serija', value: series, href: `/video/${seriesSlug}` },
+  { label: 'Sezona', value: String(season) },
+  { label: 'Epizoda', value: episodeNumber === 0 ? 'Najava' : String(episodeNumber) },
+  { label: 'Lokacija', value: `${region}${village ? `, ${village}` : ''}` },
+  { label: 'Premijera', value: dateLabel },
+];
 ---
 
 <Layout title={`${title} | ${series}`} description={description}>
-  <section class="bg-hay py-16 sm:py-20">
-    <div class="max-w-7xl mx-auto px-4 lg:px-6">
-      <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo mb-2">
-        <a href="/video" class="hover:text-ink transition-colors text-bordo">Video</a>
-        <span class="mx-2">/</span>
-        <a href={`/video/${seriesSlug}`} class="hover:text-ink transition-colors text-bordo">{series}</a>
-        <span class="mx-2">/</span>
-        <span class="text-ink/70">Epizoda</span>
-      </p>
-      <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl text-ink mb-4 max-w-4xl">
-        {title}
-      </h1>
-      <p class="text-lg text-ink/80 max-w-2xl">
-        {description}
-      </p>
+  <section class="paper-dots border-b border-ink/10">
+    <div class="max-w-6xl mx-auto px-4 lg:px-6 pt-14 sm:pt-20 pb-12">
+      <span class="accent-dash" aria-hidden="true"></span>
+      <nav aria-label="Putanja" class="font-typewriter text-sm uppercase tracking-[0.2em] text-stone mb-4">
+        <a href="/video" class="text-bordo hover:text-ink transition-colors">Video</a>
+        <span class="mx-2 text-stone/60" aria-hidden="true">/</span>
+        <a href={`/video/${seriesSlug}`} class="text-bordo hover:text-ink transition-colors">{series}</a>
+        <span class="mx-2 text-stone/60" aria-hidden="true">/</span>
+        <span>S{season} · {episodeLabel}</span>
+      </nav>
+      <h1 class="font-slab font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1] text-ink max-w-4xl">{title}</h1>
+      <p class="font-typewriter text-lg leading-relaxed text-stone mt-5 max-w-2xl">{description}</p>
     </div>
   </section>
 
-  <section class="py-12 sm:py-16 bg-paper">
-    <div class="max-w-7xl mx-auto px-4 lg:px-6">
-      {isReleased && embedUrl ? (
-        <div class="space-y-6">
-          <div class="relative w-full aspect-video bg-stone/10 rounded-2xl overflow-hidden shadow-xl">
+  <section class="bg-paper pt-14 pb-20 sm:pb-24">
+    <div class="max-w-6xl mx-auto px-4 lg:px-6">
+      <div class="episode-player">
+        <span class="photo-tape" aria-hidden="true"></span>
+        {isReleased && embedUrl ? (
+          <div class="relative w-full aspect-video bg-ink">
             <iframe
               src={embedUrl}
               title={title}
@@ -78,49 +99,66 @@ const dateLabel = releaseDate.toLocaleDateString('sr-Latn-RS', {
               loading="lazy"
             ></iframe>
           </div>
-
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div class="text-sm text-stone uppercase tracking-wider font-bold">
-              Sezona {season} • {episodeNumber === 0 ? 'Najava' : `Epizoda ${episodeNumber}`}
-            </div>
+        ) : (
+          <div class="aspect-video paper-dots flex flex-col items-center justify-center gap-6 text-center px-6">
+            <span class="stamp" style="position: static">Uskoro</span>
+            <p class="font-typewriter text-lg text-stone">Premijera {dateLabel}. Epizoda će biti dostupna na dan premijere.</p>
           </div>
+        )}
+        <div class="video-bar">
+          <span>{series} · S{season} · {episodeLabel}</span>
+          <span>{region}{village ? ` · ${village}` : ''}</span>
         </div>
-      ) : (
-        <div class="text-center py-16 bg-hay rounded-2xl">
-          <p class="text-2xl font-display text-ink mb-2">Premijera {dateLabel}</p>
-          <p class="text-ink/70">Epizoda će biti dostupna na dan premijere.</p>
-        </div>
-      )}
+      </div>
 
-      <div class="mt-10 grid lg:grid-cols-3 gap-10">
-        <div class="lg:col-span-2 prose prose-lg prose-stone max-w-none">
-          {body ? <p class="whitespace-pre-line">{body}</p> : null}
+      <div class="mt-16 grid gap-12 lg:grid-cols-[1.6fr_1fr] items-start">
+        <div>
+          <h2 class="font-slab font-bold text-3xl leading-none text-ink">O <span class="text-bordo">epizodi</span></h2>
+          <p class="text-lg leading-relaxed text-ink/75 mt-5 whitespace-pre-line">{body || description}</p>
         </div>
 
-        <aside class="space-y-6">
-          <div class="bg-cream border border-ink/10 rounded-xl p-6">
-            <h2 class="font-display text-xl text-ink mb-4">Detalji</h2>
-            <dl class="space-y-3 text-sm">
-              <div>
-                <dt class="text-stone uppercase tracking-wider font-bold">Serija</dt>
-                <dd class="text-ink"><a href={`/video/${seriesSlug}`} class="text-bordo hover:text-ink transition-colors">{series}</a></dd>
+        <aside class="ticket">
+          <h2 class="font-typewriter text-xs tracking-[0.2em] uppercase text-stone mb-10">Detalji</h2>
+          <dl class="font-typewriter">
+            {details.map((d) => (
+              <div class="flex justify-between gap-4 py-2.5 border-b border-dashed border-hay last:border-0">
+                <dt class="text-stone">{d.label}</dt>
+                <dd class="text-right text-ink">
+                  {d.href ? <a href={d.href} class="text-bordo hover:text-bordo-dark">{d.value}</a> : d.value}
+                </dd>
               </div>
-              <div>
-                <dt class="text-stone uppercase tracking-wider font-bold">Sezona / epizoda</dt>
-                <dd class="text-ink">{season} / {episodeNumber === 0 ? 'Najava' : episodeNumber}</dd>
-              </div>
-              <div>
-                <dt class="text-stone uppercase tracking-wider font-bold">Lokacija</dt>
-                <dd class="text-ink">{region}{village ? `, ${village}` : ''}</dd>
-              </div>
-              <div>
-                <dt class="text-stone uppercase tracking-wider font-bold">Premijera</dt>
-                <dd class="text-ink">{dateLabel}</dd>
-              </div>
-            </dl>
-          </div>
+            ))}
+          </dl>
         </aside>
       </div>
     </div>
   </section>
+
+  {moreEpisodes.length > 0 && (
+    <section class="paper-dots border-t border-ink/10 py-20 sm:py-24">
+      <div class="max-w-6xl mx-auto px-4 lg:px-6">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+          <div>
+            <p class="font-typewriter text-sm uppercase tracking-[0.2em] text-stone mb-3">{series}</p>
+            <h2 class="font-slab font-bold text-4xl sm:text-5xl leading-none text-ink">Još <span class="text-bordo">epizoda</span></h2>
+          </div>
+          <a href={`/video/${seriesSlug}`} class="link-more self-start sm:self-auto">Sve epizode →</a>
+        </div>
+        <div class="video-tilt grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-8">
+          {moreEpisodes.map((ep) => <EpisodeCard episode={ep} />)}
+        </div>
+      </div>
+    </section>
+  )}
 </Layout>
+
+<style>
+  .episode-player {
+    position: relative;
+    background: var(--color-paper);
+    padding: 14px 14px 0;
+    border: 1px solid var(--color-hay);
+    box-shadow: 0 18px 40px rgb(36 28 21 / 0.18), 0 2px 4px rgb(36 28 21 / 0.12);
+  }
+  .episode-player .photo-tape { left: 50%; margin-left: -55px; }
+</style>

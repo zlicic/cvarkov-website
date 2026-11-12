@@ -60,33 +60,36 @@ export default function SeasonTabs({ episodes }: SeasonTabsProps) {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Sezone">
-        {seasons.map(([season]) => (
-          <button
-            key={season}
-            role="tab"
-            aria-selected={activeSeason === season}
-            onClick={() => setActiveSeason(season)}
-            className={`px-5 py-2.5 text-sm font-bold uppercase tracking-wide rounded border transition-colors ${
-              activeSeason === season
-                ? 'bg-bordo text-cream border-bordo'
-                : 'bg-paper text-ink border-ink/20 hover:border-bordo'
-            }`}
-          >
-            Sezona {season}
-          </button>
-        ))}
+      <div className="flex flex-wrap items-end gap-x-2 border-b-2 border-ink mb-12" role="tablist" aria-label="Sezone">
+        {seasons.map(([season, list]) => {
+          const active = activeSeason === season;
+          const region = list.find((ep) => ep.region)?.region;
+          return (
+            <button
+              key={season}
+              role="tab"
+              aria-selected={active}
+              onClick={() => setActiveSeason(season)}
+              className={`-mb-0.5 px-5 pt-3 pb-2.5 font-typewriter uppercase tracking-[0.12em] text-sm border-2 border-b-0 transition-colors cursor-pointer ${
+                active
+                  ? 'bg-ink text-cream border-ink'
+                  : 'bg-cream text-ink border-hay hover:border-bordo hover:text-bordo'
+              }`}
+            >
+              Sezona {season}
+              {region && <span className={`block text-[0.7rem] tracking-[0.15em] mt-0.5 ${active ? 'text-cream/60' : 'text-stone'}`}>{region}</span>}
+            </button>
+          );
+        })}
       </div>
 
       {hasContent ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {regular.length === 0 && announcement && (
-            <SeasonAnnouncementCard episode={announcement} />
-          )}
+        <div className="video-tilt grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-8">
+          {regular.length === 0 && announcement && <UpcomingCard episode={announcement} label="Najava sezone" />}
 
           {regular.length > 0 && (
             <>
-              {teaser && <NextEpisodeCard episode={teaser} />}
+              {teaser && <UpcomingCard episode={teaser} label="Sledeća epizoda" />}
               {regular.map((ep) => (
                 <EpisodeCard key={ep.id} episode={ep} />
               ))}
@@ -94,110 +97,95 @@ export default function SeasonTabs({ episodes }: SeasonTabsProps) {
           )}
         </div>
       ) : (
-        <p className="text-stone">Trenutno nema sadržaja za ovu sezonu.</p>
+        <p className="font-typewriter text-lg text-stone border-2 border-dashed border-hay p-10 text-center">
+          Trenutno nema sadržaja za ovu sezonu.
+        </p>
       )}
     </div>
   );
 }
 
-function SeasonAnnouncementCard({ episode }: { episode: Episode }) {
+function Location({ episode }: { episode: Episode }) {
   return (
-    <article className="group bg-paper border border-ink/10 rounded-xl overflow-hidden hover:shadow-xl transition-shadow flex flex-col h-full">
-      <div className="aspect-video bg-stone/10 flex items-center justify-center">
-        <span className="font-display text-2xl sm:text-3xl text-stone/60 text-center px-4">
-          Najava nove sezone
-        </span>
-      </div>
-      <div className="p-5 flex flex-col flex-grow">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-bordo mb-2">
-          <span>Sezona {episode.season}</span>
-          <span>•</span>
-          <span>Najava</span>
-        </div>
-        <h3 className="font-display text-xl sm:text-2xl text-ink mb-1 line-clamp-2">{episode.title}</h3>
-        <p className="text-sm text-stone mb-3">
-          {episode.region}{episode.village ? `, ${episode.village}` : ''}
-        </p>
-        <p className="text-sm text-ink/80 line-clamp-3 mb-4 flex-grow">{episode.description}</p>
-        <span className="mt-auto self-start inline-flex items-center gap-2 px-4 py-2 bg-hay text-stone text-sm font-bold uppercase tracking-wide rounded">
-          Premijera {formatDate(episode.releaseDate)}
-        </span>
-      </div>
-    </article>
+    <p className="font-typewriter text-sm uppercase tracking-[0.08em] text-bordo mt-2">
+      {episode.region}
+      {episode.village ? ` · ${episode.village}` : ''}
+    </p>
   );
 }
 
-function NextEpisodeCard({ episode }: { episode: Episode }) {
+function UpcomingCard({ episode, label }: { episode: Episode; label: string }) {
   return (
-    <article className="group bg-paper border border-ink/10 rounded-xl overflow-hidden hover:shadow-xl transition-shadow flex flex-col h-full">
-      <div className="aspect-video bg-stone/10 flex items-center justify-center">
-        <span className="font-display text-2xl sm:text-3xl text-stone/60 text-center px-4">
-          Sledeća epizoda
-        </span>
-      </div>
-      <div className="p-5 flex flex-col flex-grow">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-bordo mb-2">
-          <span>Sezona {episode.season}</span>
-          <span>•</span>
-          <span>Sledeća epizoda</span>
+    <article>
+      <div className="video-print">
+        <span className="video-badge">{label}</span>
+        <div className="aspect-video bg-hay paper-dots flex items-center justify-center">
+          <span className="stamp" style={{ position: 'static', width: 120, height: 120, fontSize: '1rem' }}>
+            Uskoro
+          </span>
         </div>
-        <h3 className="font-display text-xl sm:text-2xl text-ink mb-1 line-clamp-2">{episode.title}</h3>
-        <p className="text-sm text-stone mb-3">
-          {episode.region}{episode.village ? `, ${episode.village}` : ''}
-        </p>
-        <p className="text-sm text-ink/80 line-clamp-3 mb-4 flex-grow">{episode.description}</p>
-        <span className="mt-auto self-start inline-flex items-center gap-2 px-4 py-2 bg-hay text-stone text-sm font-bold uppercase tracking-wide rounded">
-          Premijera {formatDate(episode.releaseDate)}
-        </span>
+        <div className="video-bar">
+          <span>Sezona {episode.season}</span>
+          <span>Premijera {formatDate(episode.releaseDate)}</span>
+        </div>
       </div>
+      <h3 className="font-slab font-bold text-2xl leading-tight text-ink mt-5 line-clamp-2">{episode.title}</h3>
+      <Location episode={episode} />
+      <p className="text-[0.95rem] leading-relaxed text-stone mt-2 line-clamp-3">{episode.description}</p>
     </article>
   );
 }
 
 function EpisodeCard({ episode }: { episode: Episode }) {
   const released = episode.season === 1 || isReleased(episode.releaseDate);
+  const href = `/video/${slugify(episode.series)}/${slugify(episode.title)}`;
+
+  const media = (
+    <>
+      <span className="video-badge">
+        S{episode.season} · E{episode.episodeNumber}
+      </span>
+      {episode.thumbnail ? (
+        <img
+          src={episode.thumbnail}
+          alt={`Naslovna slika epizode ${episode.title}`}
+          className="aspect-video"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <div className="aspect-video bg-hay flex items-center justify-center">
+          <span className="font-slab font-bold text-xl text-stone">Uskoro</span>
+        </div>
+      )}
+      {released && <span className="video-play" aria-hidden="true" />}
+      <div className="video-bar">
+        <span>{episode.series}</span>
+        <span>{released ? 'Gledaj →' : `Premijera ${formatDate(episode.releaseDate)}`}</span>
+      </div>
+    </>
+  );
 
   return (
-    <article className="group bg-paper border border-ink/10 rounded-xl overflow-hidden hover:shadow-xl transition-shadow flex flex-col h-full">
-      <div className="aspect-video bg-stone/10 overflow-hidden">
-        {episode.thumbnail ? (
-          <img
-            src={episode.thumbnail}
-            alt={`Naslovna slika epizode ${episode.title}`}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="font-display text-xl text-stone/60">Uskoro</span>
-          </div>
-        )}
-      </div>
-      <div className="p-5 flex flex-col flex-grow">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-bordo mb-2">
-          <span>Sezona {episode.season}</span>
-          <span>•</span>
-          <span>Epizoda {episode.episodeNumber}</span>
-        </div>
-        <h3 className="font-display text-xl sm:text-2xl text-ink mb-1 line-clamp-2">{episode.title}</h3>
-        <p className="text-sm text-stone mb-3">
-          {episode.region}{episode.village ? `, ${episode.village}` : ''}
-        </p>
-        <p className="text-sm text-ink/80 line-clamp-3 mb-4 flex-grow">{episode.description}</p>
+    <article className="group">
+      {released ? (
+        <a href={href} className="video-print" aria-label={`Gledaj: ${episode.title}`}>
+          {media}
+        </a>
+      ) : (
+        <div className="video-print">{media}</div>
+      )}
+      <h3 className="font-slab font-bold text-2xl leading-tight text-ink mt-5 line-clamp-2">
         {released ? (
-          <a
-            href={`/video/${slugify(episode.series)}/${slugify(episode.title)}`}
-            className="mt-auto self-start inline-flex items-center gap-2 px-4 py-2 bg-bordo text-cream text-sm font-bold uppercase tracking-wide rounded hover:bg-bordo-dark transition-colors"
-          >
-            Gledaj epizodu
+          <a href={href} className="hover:text-bordo transition-colors">
+            {episode.title}
           </a>
         ) : (
-          <span className="mt-auto self-start inline-flex items-center gap-2 px-4 py-2 bg-hay text-stone text-sm font-bold uppercase tracking-wide rounded">
-            Premijera {formatDate(episode.releaseDate)}
-          </span>
+          episode.title
         )}
-      </div>
+      </h3>
+      <Location episode={episode} />
+      <p className="text-[0.95rem] leading-relaxed text-stone mt-2 line-clamp-3">{episode.description}</p>
     </article>
   );
 }

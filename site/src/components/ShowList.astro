@@ -3,67 +3,106 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   shows: CollectionEntry<'shows'>[];
-  title?: string;
 }
 
-const { shows, title = 'Naredni nastupi' } = Astro.props;
+const { shows } = Astro.props;
 
 const TICKETS_URL = 'https://new.gigstix.com/';
 
 function formatDateParts(date: Date) {
-  const weekday = date.toLocaleDateString('sr-Latn-RS', { weekday: 'short' }).replace('.', '');
-  const day = date.getDate();
+  const weekday = date.toLocaleDateString('sr-Latn-RS', { weekday: 'long' });
+  const day = String(date.getDate()).padStart(2, '0');
   const month = date.toLocaleDateString('sr-Latn-RS', { month: 'short' }).replace('.', '');
   const year = date.getFullYear();
   return { weekday, day, month, year };
 }
 
 function formatInfo(show: CollectionEntry<'shows'>) {
-  const parts = [show.data.venue, show.data.city, show.data.time].filter(Boolean);
-  return parts.join(' • ');
+  return [show.data.venue, show.data.city, show.data.time].filter(Boolean).join(' · ');
 }
-
-const isDeclined = (show: CollectionEntry<'shows'>) => show.data.status === 'declined';
 ---
 
-<div class="space-y-0">
-  {title && <h2 class="font-display text-3xl sm:text-4xl text-ink mb-8">{title}</h2>}
-  <ul class="divide-y divide-ink/10 border-t border-ink/10">
-    {shows.map((show) => {
-      const { weekday, day, month, year } = formatDateParts(show.data.date);
-      const declined = isDeclined(show);
-      return (
-        <li class={`py-5 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 ${declined ? 'opacity-60 bg-hay/30 border-l-4 border-bordo pl-3 sm:pl-4' : ''}`}>
-          <div class="flex items-start sm:items-center gap-3 min-w-[6.5rem]">
-            <span class={`font-display text-4xl sm:text-5xl font-bold leading-none ${declined ? 'text-stone' : 'text-ink'}`}>{day}</span>
-            <div class="flex flex-col text-xs font-bold uppercase tracking-wider text-stone leading-tight">
-              <span>{month}</span>
-              <span>{year}</span>
-              <span class="text-ink/60 normal-case font-medium">{weekday}</span>
-            </div>
-          </div>
+<ul class="grid gap-5">
+  {shows.map((show) => {
+    const { weekday, day, month, year } = formatDateParts(show.data.date);
+    const declined = show.data.status === 'declined';
+    return (
+      <li class:list={['show-ticket', declined && 'is-declined']}>
+        <div class="show-date">
+          <span class="font-slab font-bold text-5xl leading-[0.9] text-bordo">{day}</span>
+          <span class="font-typewriter uppercase tracking-[0.15em] text-sm mt-1.5">{month} {year}</span>
+          <span class="text-xs text-stone mt-0.5">{weekday}</span>
+        </div>
 
-          <div class="flex-1 min-w-0">
-            <h3 class={`font-display text-xl sm:text-2xl truncate ${declined ? 'text-stone line-through' : 'text-ink'}`}>{show.data.title}</h3>
-            <p class="text-sm text-stone">{formatInfo(show)}</p>
-          </div>
+        <div class="show-info">
+          <h3 class:list={['font-slab font-bold text-2xl sm:text-[1.75rem] leading-tight text-ink', declined && 'line-through text-stone']}>
+            {show.data.title}
+          </h3>
+          <p class="font-typewriter text-stone mt-1.5">{formatInfo(show)}</p>
+        </div>
 
+        <div class="show-action">
           {declined ? (
-            <span class="self-start sm:self-center inline-flex items-center gap-2 px-5 py-2.5 bg-bordo/10 text-bordo text-sm font-bold uppercase tracking-wide rounded">
-              Otkazano
-            </span>
+            <span class="font-typewriter uppercase tracking-wide text-sm text-bordo border-2 border-bordo px-4 py-2 inline-block -rotate-3">Otkazano</span>
           ) : (
-            <a
-              href={TICKETS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="self-start sm:self-center inline-flex items-center gap-2 px-5 py-2.5 bg-bordo text-cream text-sm font-bold uppercase tracking-wide rounded hover:bg-bordo-dark transition-colors"
-            >
-              Karte
-            </a>
+            <a href={TICKETS_URL} target="_blank" rel="noopener noreferrer" class="btn btn-primary">Karte →</a>
           )}
-        </li>
-      );
-    })}
-  </ul>
-</div>
+        </div>
+      </li>
+    );
+  })}
+</ul>
+
+<style>
+  .show-ticket {
+    position: relative;
+    display: grid;
+    grid-template-columns: 9rem 1fr auto;
+    align-items: center;
+    background: var(--color-cream);
+    border: 1px solid var(--color-hay);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .show-ticket:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-bordo);
+    box-shadow: 0 10px 24px rgb(36 28 21 / 0.12);
+  }
+  .show-ticket.is-declined { opacity: 0.65; }
+  .show-ticket.is-declined:hover { transform: none; box-shadow: none; border-color: var(--color-hay); }
+
+  .show-date {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.4rem 0.5rem;
+    border-right: 2px dashed var(--color-hay);
+    align-self: stretch;
+    justify-content: center;
+  }
+  /* zasečeni polukrugovi na perforaciji */
+  .show-date::before,
+  .show-date::after {
+    content: "";
+    position: absolute;
+    right: -11px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--ticket-cut, var(--color-paper));
+    border: 1px solid var(--color-hay);
+  }
+  .show-date::before { top: -11px; }
+  .show-date::after { bottom: -11px; }
+
+  .show-info { padding: 1.4rem 2rem; min-width: 0; }
+  .show-action { padding: 0 2rem; }
+
+  @media (max-width: 640px) {
+    .show-ticket { grid-template-columns: 6.5rem 1fr; }
+    .show-info { padding: 1.2rem 1.2rem; }
+    .show-action { grid-column: 1 / -1; padding: 1rem 1.2rem; border-top: 2px dashed var(--color-hay); }
+    .show-date::before, .show-date::after { display: none; }
+  }
+</style>

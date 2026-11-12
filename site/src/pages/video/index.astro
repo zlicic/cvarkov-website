@@ -4,8 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import { slugify } from '../../lib/slugify';
 
-const videoImage =
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGFNGbhAbBfIWP-qB4YEDtwToY73uiBre26GwMmUw6qRC_OlRaIWlm46Yb&s=10';
+const videoImage = 'https://img.youtube.com/vi/DY82l1h9BiQ/hqdefault.jpg';
 
 const allSeries = await getCollection('series');
 const episodes = await getCollection('episodes');
@@ -36,37 +35,42 @@ const seriesList = allSeries
 <Layout title="Video" description="Svi video zapisi Đorđa Čvarkova — serije, epizode i sadržaj iza scene.">
   <PageHeader
     eyebrow="Video"
-    title="Svi video zapisi"
+    title="Svi video"
+    titleAccent="zapisi."
     description="Biraj grupu videa i gledaj po sezonama, ili pogledaj šta se dešavalo iza kamere."
     image={videoImage}
-    imageAlt="Đorđe Čvarkov video"
-  />
+    imageAlt="Đorđe Čvarkov u kancelariji"
+    caption="— Iz arhive."
+    stamp="Strogo<br>poverljivo"
+  >
+    {seriesList.slice(0, 2).map((s, i) => (
+      <a href={`/video/${s.slug}`} class:list={['btn', i === 0 && 'btn-primary']}>{s.title}</a>
+    ))}
+  </PageHeader>
 
-  <section class="py-16 sm:py-24 bg-paper">
-    <div class="max-w-7xl mx-auto px-4 lg:px-6">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+  <section class="bg-paper py-20 sm:py-24">
+    <div class="max-w-6xl mx-auto px-4 lg:px-6">
+      <div class="mb-12">
+        <p class="font-typewriter text-sm uppercase tracking-[0.2em] text-stone mb-3">Kategorije</p>
+        <h2 class="font-slab font-bold text-4xl sm:text-5xl leading-none text-ink">Biraj <span class="text-bordo">grupu</span></h2>
+      </div>
+
+      <div class="video-tilt grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-8">
         {seriesList.map((s) => (
-          <a
-            href={`/video/${s.slug}`}
-            class="group bg-paper border border-ink/10 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow"
-          >
-            <div class="aspect-video bg-stone/10 overflow-hidden">
-              <img
-                src={s.image}
-                alt={s.title}
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div class="p-6">
-              <p class="text-xs font-bold uppercase tracking-wider text-bordo mb-2">
-                {s.count} {videoLabel(s.count)}
-              </p>
-              <h2 class="font-display text-2xl text-ink mb-2">{s.title}</h2>
-              <p class="text-sm text-ink/70 line-clamp-3">{s.description}</p>
-            </div>
-          </a>
+          <article class="group">
+            <a href={`/video/${s.slug}`} class="video-print" aria-label={s.title}>
+              <span class="video-badge">{s.count} {videoLabel(s.count)}</span>
+              <img src={s.image} alt="" class="aspect-[4/3]" loading="lazy" decoding="async" />
+              <div class="video-bar">
+                <span>Grupa</span>
+                <span>Otvori →</span>
+              </div>
+            </a>
+            <h2 class="font-slab font-bold text-3xl leading-tight text-ink mt-5">
+              <a href={`/video/${s.slug}`} class="hover:text-bordo transition-colors">{s.title}</a>
+            </h2>
+            <p class="text-[0.95rem] leading-relaxed text-stone mt-2 line-clamp-3">{s.description}</p>
+          </article>
         ))}
       </div>
     </div>
