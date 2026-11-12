@@ -46,8 +46,8 @@ const { title, titleAccent, description, image, imageAlt = '', caption, stamp, c
       <span class="photo-tape" aria-hidden="true"></span>
       <div class="photo-frame">
         <img src={image} alt={imageAlt} width="1080" height="675" loading="eager" decoding="async" />
+        {caption && <figcaption>{caption}</figcaption>}
       </div>
-      {caption && <figcaption>{caption}</figcaption>}
       {stamp && <span class="stamp" aria-hidden="true" set:html={stamp} />}
     </figure>
   </div>

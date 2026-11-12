@@ -138,6 +138,7 @@ button:focus-visible {
 /* Fotografija kao odštampana slika */
 .photo-print { position: relative; margin: 0; width: 100%; max-width: 560px; }
 .photo-print .photo-frame {
+  position: relative;
   background: var(--color-paper);
   padding: 14px 14px 48px;
   transform: rotate(2deg);
@@ -152,10 +153,13 @@ button:focus-visible {
 }
 .photo-print figcaption {
   position: absolute;
-  right: 26px;
-  bottom: 16px;
+  right: 18px;
+  bottom: 14px;
+  max-width: calc(100% - 36px);
+  text-align: right;
   font-family: var(--font-typewriter);
   font-size: 0.85rem;
+  line-height: 1.25;
   color: var(--color-stone);
 }
 .photo-tape {
