@@ -1,6 +1,5 @@
 ---
 interface Props {
-  eyebrow?: string;
   /** Prvi red naslova (tamna boja) */
   title: string;
   /** Drugi red naslova (bordo) */
@@ -12,29 +11,25 @@ interface Props {
   caption?: string;
   /** Tekst u pečatu; <br> je dozvoljen */
   stamp?: string;
-  /** Putanja (breadcrumbs) iznad naslova, umesto eyebrow teksta */
+  /** Putanja (breadcrumbs) iznad naslova */
   crumbs?: { href?: string; label: string }[];
 }
 
-const { eyebrow, title, titleAccent, description, image, imageAlt = '', caption, stamp, crumbs } = Astro.props;
+const { title, titleAccent, description, image, imageAlt = '', caption, stamp, crumbs } = Astro.props;
 ---
 
 <section class="paper-dots border-b border-ink/10 overflow-hidden">
   <div class="max-w-6xl mx-auto px-4 lg:px-6 py-16 sm:py-24 grid gap-14 lg:gap-16 lg:grid-cols-[1fr_1.05fr] items-center">
     <div>
-      <span class="accent-dash" aria-hidden="true"></span>
-      {crumbs ? (
+      <!-- <span class="accent-dash" aria-hidden="true"></span> -->
         <nav aria-label="Putanja" class="font-typewriter text-sm uppercase tracking-[0.2em] text-stone mb-3">
-          {crumbs.map((c, i) => (
+          {crumbs && crumbs.map((c, i) => (
             <>
               {i > 0 && <span class="mx-2 text-stone/60" aria-hidden="true">/</span>}
               {c.href ? <a href={c.href} class="text-bordo hover:text-ink transition-colors">{c.label}</a> : <span>{c.label}</span>}
             </>
           ))}
         </nav>
-      ) : eyebrow && (
-        <p class="font-typewriter text-sm uppercase tracking-[0.2em] text-stone mb-3">{eyebrow}</p>
-      )}
       <h1 id="page-title" class="font-slab font-bold text-5xl sm:text-6xl lg:text-7xl leading-[0.95] text-ink">
         {title}
         {titleAccent && (<><br /><span class="text-bordo">{titleAccent}</span></>)}
