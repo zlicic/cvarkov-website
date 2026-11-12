@@ -14,21 +14,21 @@ const mobileNav = [...leftNav, ...rightNav];
 const current = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-ink/10 mb-11">
+<header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-ink/10">
   <div class="max-w-7xl mx-auto px-4 lg:px-6">
     <nav
-      class="flex items-center justify-between h-18 md:h-24 md:grid md:grid-cols-[1fr_auto_1fr]"
+      class="flex items-center justify-between h-18 md:grid md:grid-cols-[1fr_auto_1fr]"
       aria-label="Glavna navigacija"
     >
       {/* Mobile: logo left */}
       <a
         href="/"
         class="md:hidden h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-cream bg-cream shadow-md focus-visible:outline-offset-4"
-        aria-label="Đorđe Cvarkov — zvanični sajt"
+        aria-label="Đorđe Čvarkov — zvanični sajt"
       >
         <img
           src="/logo.png"
-          alt="Đorđe Cvarkov"
+          alt="Đorđe Čvarkov"
           class="h-full w-full object-cover"
           width="56"
           height="56"
@@ -36,15 +36,15 @@ const current = Astro.url.pathname;
       </a>
 
       {/* Left: Početna + Video */}
-      <div class="hidden md:flex items-center justify-start md:justify-end md:pr-8">
-        <ul class="flex items-center gap-6">
+      <div class="hidden md:flex items-center justify-start md:justify-end md:pr-8 mb-4">
+        <ul class="flex items-center gap-8">
           {leftNav.map((item) => {
             const isActive = current === item.href || current.startsWith(`${item.href}/`);
             return (
               <li>
                 <a
                   href={item.href}
-                  class={`relative py-1 text-sm font-bold tracking-wide uppercase transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-bordo after:transition-opacity ${
+                  class={`relative py-1 text-base font-typewriter tracking-wide uppercase transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-bordo after:transition-opacity ${
                     isActive ? 'text-bordo after:opacity-100' : 'text-ink hover:text-bordo after:opacity-0'
                   }`}
                   aria-current={isActive ? 'page' : undefined}
@@ -60,28 +60,28 @@ const current = Astro.url.pathname;
       {/* Desktop: centered logo */}
       <a
         href="/"
-        class="hidden md:block h-[120px] w-auto shrink-0 overflow-hidden rounded-full border-2 border-cream bg-cream shadow-md focus-visible:outline-offset-4"
-        aria-label="Đorđe Cvarkov — zvanični sajt"
+        class="hidden md:block h-[96px] w-auto shrink-0 overflow-hidden rounded-full border-2 border-cream bg-cream shadow-md focus-visible:outline-offset-4"
+        aria-label="Đorđe Čvarkov — zvanični sajt"
       >
         <img
           src="/logo.png"
-          alt="Đorđe Cvarkov"
+          alt="Đorđe Čvarkov"
           class="h-full w-full object-cover"
-          width="120"
-          height="120"
+          width="96"
+          height="96"
         />
       </a>
 
       {/* Right: Predstave + Kontakt */}
-      <div class="flex items-center justify-end md:justify-start md:pl-8">
-        <ul class="hidden md:flex items-center gap-6">
+      <div class="flex items-center justify-end md:justify-start md:pl-8 mb-4">
+        <ul class="hidden md:flex items-center gap-8">
           {rightNav.map((item) => {
             const isActive = current === item.href || current.startsWith(`${item.href}/`);
             return (
               <li>
                 <a
                   href={item.href}
-                  class={`relative py-1 text-sm font-bold tracking-wide uppercase transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-bordo after:transition-opacity ${
+                  class={`relative py-1 text-base font-typewriter tracking-wide uppercase transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-bordo after:transition-opacity ${
                     isActive ? 'text-bordo after:opacity-100' : 'text-ink hover:text-bordo after:opacity-0'
                   }`}
                   aria-current={isActive ? 'page' : undefined}
@@ -101,7 +101,7 @@ const current = Astro.url.pathname;
             <svg class="group-open:hidden" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             <svg class="hidden group-open:block" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </summary>
-          <div class="absolute top-18 md:top-24 left-0 right-0 bg-cream border-b border-ink/10 px-4 py-5 shadow-xl">
+          <div class="absolute top-18 left-0 right-0 bg-cream border-b border-ink/10 px-4 py-5 shadow-xl">
             <ul class="flex flex-col gap-4">
               {mobileNav.map((item) => {
                 const isActive = current === item.href || current.startsWith(`${item.href}/`);
@@ -109,7 +109,7 @@ const current = Astro.url.pathname;
                   <li>
                     <a
                       href={item.href}
-                      class={`block text-base font-semibold uppercase tracking-wide ${
+                      class={`block text-base font-typewriter uppercase tracking-wide ${
                         isActive ? 'text-bordo' : 'text-ink/80 hover:text-bordo'
                       }`}
                       aria-current={isActive ? 'page' : undefined}

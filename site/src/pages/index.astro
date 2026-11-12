@@ -5,6 +5,9 @@ import SocialLinks from '../components/SocialLinks.astro';
 import EpisodeCard from '../components/EpisodeCard.astro';
 import ShowList from '../components/ShowList.astro';
 
+const homeImage =
+  'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ytimg.com%2Fvi%2FdiGgRkFFGcM%2Fmaxresdefault.jpg&f=1&nofb=1&ipt=66d0f8d1077286181c92095803914b82a12712615de6d615041feb0eb939c990&ipo=images';
+
 const episodes = await getCollection('episodes');
 const videoEpisodes = episodes.filter((ep) => ep.data.type === 'episode');
 const sortedEpisodes = videoEpisodes.sort((a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime());
@@ -27,56 +30,40 @@ const upcomingShows = shows
 
 <Layout title="Početna">
   {/* Hero */}
-  <section class="relative bg-cream overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 lg:px-6 py-12 lg:py-20">
-      <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center min-h-[70vh]">
-        <div class="order-2 lg:order-1 space-y-8">
-          <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo">Zvanični sajt</p>
+  <section
+    class="relative flex h-[calc(100vh-4.5rem)] flex-col overflow-hidden bg-cover bg-center bg-no-repeat"
+    style={`background-image: url('${homeImage}')`}
+    aria-label="Đorđe Čvarkov"
+  >
+    <div class="absolute inset-0 bg-ink/50" aria-hidden="true"></div>
 
-          <h1 class="font-display text-6xl sm:text-7xl lg:text-8xl font-bold text-ink leading-[0.9]">
-            ĐORĐE<br />CVARKOV
-          </h1>
+    <div class="relative z-10 flex flex-1 flex-col items-center justify-center text-center px-4">
+      <p class="text-lg font-bold uppercase tracking-[0.3em] text-cream/80 mb-8">Zvanični sajt</p>
 
-          <p class="font-body text-xl sm:text-2xl text-ink/80 max-w-md leading-relaxed">
-            Objasniću ti kako stvari stoje — selo po selo, reč po reč.
-          </p>
+      <h1 class="font-display font-bold leading-[0.85] text-cream text-[clamp(3rem,14vw,9rem)] [text-shadow:0_4px_30px_rgba(0,0,0,0.7)]">
+        ĐORĐA ČVARKOVA
+      </h1>
+    </div>
 
-          <div class="flex flex-wrap gap-4">
-            <a
-              href="/video"
-              class="inline-flex items-center gap-2 px-7 py-3.5 bg-bordo text-cream text-sm font-bold uppercase tracking-wide rounded hover:bg-bordo-dark transition-colors"
-            >
-              Pogledaj video
-            </a>
-          </div>
-
-          <SocialLinks variant="dark" />
-        </div>
-
-        {bio?.photo && (
-          <div class="order-1 lg:order-2 relative">
-            <div class="absolute inset-0 bg-hay rounded-3xl rotate-2"></div>
-            <img
-              src={bio.photo}
-              alt="Đorđe Cvarkov"
-              class="relative rounded-3xl shadow-2xl object-cover w-full aspect-[4/3] lg:aspect-[3/4]"
-              loading="eager"
-              decoding="async"
-            />
-          </div>
-        )}
-      </div>
+    <div class="relative z-10 pb-6 flex justify-center">
+      <a
+        href="#pocetak"
+        aria-label="Skroluj do sadržaja"
+        class="animate-bounce text-cream/80 hover:text-cream transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
     </div>
   </section>
 
   {/* O Đorđu */}
   {Content && (
-    <section class="py-16 sm:py-24 bg-paper">
+    <section id="pocetak" class="py-16 sm:py-24 bg-paper">
       <div class="max-w-7xl mx-auto px-4 lg:px-6">
         <div class="lg:columns-2 lg:gap-12">
           <div class="mb-8 break-after-avoid">
             <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo">Ko je Đorđe?</p>
-            <h2 class="font-display text-4xl sm:text-5xl text-ink mt-2">Đorđe Cvarkov</h2>
+            <h2 class="font-display text-4xl sm:text-5xl text-ink mt-2">Đorđe Čvarkov</h2>
           </div>
           <div class="prose prose-lg prose-stone max-w-none text-ink/80">
             <Content />

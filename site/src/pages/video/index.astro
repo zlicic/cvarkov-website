@@ -1,7 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import PageHeader from '../../components/PageHeader.astro';
 import { slugify } from '../../lib/slugify';
+
+const videoImage =
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGFNGbhAbBfIWP-qB4YEDtwToY73uiBre26GwMmUw6qRC_OlRaIWlm46Yb&s=10';
 
 const allSeries = await getCollection('series');
 const episodes = await getCollection('episodes');
@@ -29,16 +33,14 @@ const seriesList = allSeries
   .sort((a, b) => a.order - b.order);
 ---
 
-<Layout title="Video" description="Svi video zapisi Đorđa Cvarkova — serije, epizode i sadržaj iza scene.">
-  <section class="bg-hay py-16 sm:py-20">
-    <div class="max-w-7xl mx-auto px-4 lg:px-6">
-      <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo mb-2">Video</p>
-      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mb-4">Svi video zapisi</h1>
-      <p class="text-lg text-ink/80 max-w-2xl">
-        Biraj grupu videa i gledaj po sezonama, ili pogledaj šta se dešavalo iza kamere.
-      </p>
-    </div>
-  </section>
+<Layout title="Video" description="Svi video zapisi Đorđa Čvarkova — serije, epizode i sadržaj iza scene.">
+  <PageHeader
+    eyebrow="Video"
+    title="Svi video zapisi"
+    description="Biraj grupu videa i gledaj po sezonama, ili pogledaj šta se dešavalo iza kamere."
+    image={videoImage}
+    imageAlt="Đorđe Čvarkov video"
+  />
 
   <section class="py-16 sm:py-24 bg-paper">
     <div class="max-w-7xl mx-auto px-4 lg:px-6">

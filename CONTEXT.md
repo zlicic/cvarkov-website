@@ -1,19 +1,19 @@
-# Đorđe Cvarkov Official Website
+# Đorđe Čvarkov Official Website
 
-Sajt fiktivnog komičarskog brenda Đorđa Cvarkova. Promoviše lik, seriju "Cvarkov Objasnjava", buduće predstave i društvene mreže. Nezavisan od originalne emisije iz koje je lik nastao.
+Sajt fiktivnog komičarskog brenda Đorđa Čvarkova. Promoviše lik, seriju "Čvarkov Objasnjava", buduće predstave i društvene mreže. Nezavisan od originalne emisije iz koje je lik nastao.
 
 ## Language
 
-**Đorđe Cvarkov (brend):**
+**Đorđe Čvarkov (brend):**
 Fiktivni komičarski lik koji funkcioniše kao zaseban brend. Koristi se za promociju sopstvenog sadržaja, saradnji i budućih nastupa.
 _Avoid_: lik iz Državnog Posla, zvanični lik emisije
 
-**Cvarkov Objasnjava:**
-YouTube serija u kojoj Đorđe Cvarkov objašnjava teme vezane za regije Srbije. Osnovna jedinica sadržaja na sajtu u prvoj fazi.
+**Čvarkov Objasnjava:**
+YouTube serija u kojoj Đorđe Čvarkov objašnjava teme vezane za regije Srbije. Osnovna jedinica sadržaja na sajtu u prvoj fazi.
 _Avoid_: emisija, šou
 
 **Sezona:**
-Skup epizoda "Cvarkov Objasnjava" povezanih jednom geografskom regijom. Prva sezona = Bačka, druga = Srem, treća = Banat.
+Skup epizoda "Čvarkov Objasnjava" povezanih jednom geografskom regijom. Prva sezona = Bačka, druga = Srem, treća = Banat.
 _Avoid_: sezona bez regije, ciklus
 
 **Epizoda:**

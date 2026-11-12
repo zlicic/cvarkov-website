@@ -5,7 +5,7 @@ const episodes = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/episodes' }),
   schema: z.object({
     title: z.string(),
-    series: z.string().default('Cvarkov Objasnjava'),
+    series: z.string().default('Čvarkov Objasnjava'),
     season: z.number(),
     episodeNumber: z.number(),
     region: z.string(),

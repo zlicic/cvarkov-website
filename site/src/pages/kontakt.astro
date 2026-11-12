@@ -1,51 +1,65 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 
-const [bioEntry] = await getCollection('bio');
-const bio = bioEntry?.data;
+const contactImage =
+  'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.YXBp7hYLBqjuWeCjmoIhvQHaEK%3Fpid%3DApi&f=1&ipt=f7b449ab6f7ee93b9050174803eb6a90ef7c01b799aef31324859b46489392e6&ipo=images';
 ---
 
-<Layout title="Kontakt" description="Kontakt i saradnja sa Đorđem Cvarkovom.">
-  <section class="bg-hay py-16 sm:py-24">
-    <div class="max-w-7xl mx-auto px-4 lg:px-6 text-center">
-      <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo mb-2">Kontakt</p>
-      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mb-6">Kontakt i saradnja</h1>
-      <p class="text-lg sm:text-xl text-ink/80 max-w-2xl mx-auto">
-        Za predstave, saradnje i medijska pitanja pišite direktno. Odgovor stiže u najkraćem roku.
-      </p>
-    </div>
-  </section>
+<Layout title="Kontakt" description="Kontakt podaci i saradnja sa Đorđem Čvarkovom.">
+  <PageHeader
+    eyebrow="Kontakt"
+    title="Kontakt i saradnja"
+    description="Kontakt podaci za predstave, saradnju i medijska pitanja."
+    image={contactImage}
+    imageAlt="Đorđe Čvarkov drži telefon"
+  />
 
   <section class="py-16 sm:py-24 bg-paper">
-    <div class="max-w-xl mx-auto px-4 lg:px-6 space-y-6">
-      <div class="space-y-4">
-        <a
-          href="tel:+38165123456789"
-          class="block w-full text-center px-6 py-4 bg-bordo text-cream text-lg font-bold uppercase tracking-wide rounded hover:bg-bordo-dark transition-colors"
-        >
-          +381 65 1234 56789
-        </a>
-        <p class="text-center text-xs text-stone uppercase tracking-wider font-bold">Cvarkov Tim</p>
-      </div>
+    <div class="max-w-3xl mx-auto px-4 lg:px-6">
+      <dl class="grid gap-6 sm:grid-cols-2">
+        <div class="bg-cream p-6 rounded border border-hay">
+          <dt class="flex items-center gap-2 text-sm uppercase tracking-[0.2em] text-stone font-bold mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Telefon
+          </dt>
+          <dd>
+            <a href="tel:+38165123456789" class="text-2xl font-display text-ink hover:text-bordo transition-colors">
+              +381 65 1234 56789
+            </a>
+          </dd>
+          <dd class="text-sm text-stone mt-1">Čvarkov tim</dd>
+        </div>
 
-      <a
-        href="mailto:info@cvarkov.com"
-        class="block w-full text-center px-6 py-4 border-2 border-ink text-ink text-lg font-bold uppercase tracking-wide rounded hover:bg-ink hover:text-cream transition-colors"
-      >
-        info@cvarkov.com
-      </a>
+        <div class="bg-cream p-6 rounded border border-hay">
+          <dt class="flex items-center gap-2 text-sm uppercase tracking-[0.2em] text-stone font-bold mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            Generalne informacije
+          </dt>
+          <dd>
+            <a href="mailto:info@cvarkov.com" class="text-2xl font-display text-ink hover:text-bordo transition-colors">
+              info@cvarkov.com
+            </a>
+          </dd>
+        </div>
 
-      <a
-        href="mailto:saradnja@cvarkov.com"
-        class="block w-full text-center px-6 py-4 border-2 border-ink text-ink text-lg font-bold uppercase tracking-wide rounded hover:bg-ink hover:text-cream transition-colors"
-      >
-        saradnja@cvarkov.com
-      </a>
+        <div class="bg-cream p-6 rounded border border-hay sm:col-span-2">
+          <dt class="flex items-center gap-2 text-sm uppercase tracking-[0.2em] text-stone font-bold mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            Saradnja
+          </dt>
+          <dd>
+            <a href="mailto:saradnja@cvarkov.com" class="text-2xl font-display text-ink hover:text-bordo transition-colors">
+              saradnja@cvarkov.com
+            </a>
+          </dd>
+          <dd class="text-sm text-stone mt-1">Za predstave, projekte i medijska pitanja.</dd>
+        </div>
+      </dl>
 
-      <div class="text-center pt-6 border-t border-ink/10">
-        <p class="text-sm text-stone uppercase tracking-[0.2em] mb-4 font-bold">Društvene mreže</p>
+      <div class="mt-12 text-center border-t border-ink/10 pt-10">
+        <h2 class="text-sm uppercase tracking-[0.2em] text-stone font-bold mb-4">Društvene mreže</h2>
         <SocialLinks variant="dark" class="justify-center" exclude={['YouTube']} />
       </div>
     </div>

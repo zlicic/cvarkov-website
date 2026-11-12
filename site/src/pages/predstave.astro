@@ -1,24 +1,25 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import ShowList from '../components/ShowList.astro';
 
 const shows = await getCollection('shows');
 const sorted = shows.sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
 
 const upcoming = sorted.filter((s) => s.data.status === 'upcoming' || s.data.status === 'declined');
+
+const showImage = 'https://i.ytimg.com/vi/ImFitAV4vo4/maxresdefault.jpg';
 ---
 
-<Layout title="Predstave" description="Najave predstava Đorđa Cvarkova — termini, lokacije i karte.">
-  <section class="bg-hay py-16 sm:py-24">
-    <div class="max-w-7xl mx-auto px-4 lg:px-6 text-center">
-      <p class="text-sm font-bold uppercase tracking-[0.2em] text-bordo mb-2">Uživo</p>
-      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mb-6">Predstave</h1>
-      <p class="text-lg sm:text-xl text-ink/80 max-w-2xl mx-auto">
-        Termini, lokacije i karte za predstave Đorđa Cvarkova.
-      </p>
-    </div>
-  </section>
+<Layout title="Predstave" description="Najave predstava Đorđa Čvarkova — termini, lokacije i karte.">
+  <PageHeader
+    eyebrow="Uživo"
+    title="Predstave"
+    description="Termini, lokacije i karte za predstave Đorđa Čvarkova."
+    image={showImage}
+    imageAlt="Đorđe Čvarkov na sceni"
+  />
 
   <section class="py-16 sm:py-24 bg-paper">
     <div class="max-w-7xl mx-auto px-4 lg:px-6">

@@ -1,6 +1,6 @@
 # cvarkov-site
 
-Astro projekat za zvanični sajt Đorđa Cvarkova.
+Astro projekat za zvanični sajt Đorđa Čvarkova.
 
 ## Uslovi
 

@@ -1,6 +1,6 @@
-# Đorđe Cvarkov — zvanični sajt
+# Đorđe Čvarkov — zvanični sajt
 
-Sajt fiktivnog komičarskog brenda Đorđa Cvarkova. MVP sadrži početnu stranu, stranicu serije, predstave, biografiju i kontakt.
+Sajt fiktivnog komičarskog brenda Đorđa Čvarkova. MVP sadrži početnu stranu, stranicu serije, predstave, biografiju i kontakt.
 
 ## Stack
 
