@@ -9,7 +9,7 @@ facebook: https://facebook.com/cvarkov.official
 
 Đorđe Čvarkov je fiktivni komičarski lik koji putuje po Vojvodini i objašnjava svakodnevne stvari na svoj način — direktno, sa mnogo šale i bez uvijanja.
 
-Rođen je iz potrebe da se priča o običnim ljudima, selima koje se ne vide na televiziji i humoru koji ne traži dozvolu. Njegov moto je jednostavan: ako ne znaš, pitaj. Ako znaš, objasni.
+Rođen je iz potrebe da se priča o običnim ljudima, selima koje se ne vide na televiziji i humoru koji ne traži dozvolu. Njegov moto je jednostavan: Da vam ja kažem kako jeste i kako je bilo..
 
 U seriji **Čvarkov Objasnjava** obilazi regije, upoznaje ljude i razbija mitove o životu „na selu“. Prva sezona je posvećena Bačkoj.
 
